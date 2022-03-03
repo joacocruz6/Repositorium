@@ -6,6 +6,7 @@ ipython==8.1.0
 jupyter==1.0.0
 jupyterlab==3.3.0
 model_bakery==1.4.0
+psycopg2==2.9.3
 pytest==7.0.1
 pytest-django==4.5.2
 pytest-mock==3.7.0

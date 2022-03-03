@@ -3,15 +3,15 @@
 function repositorium(){
     case "$1" in
     "install")
-            if [ $# -eq 0]; then
-                pip install $@
+            if [[ "$#" -eq 0]] ; then
+                pip install "$@"
             else
                 pip install -r requirements.txt
             fi
             ;;
     "startapp"|"makeapp"|"newapp")
-                                   mkdir Repositorium/$2
-                                   python manage.py startapp $2 Repositorium/$2
+                                   mkdir repositorium/$2
+                                   python manage.py startapp $2 repositorium/$2
                                    ;;
     "makemigrations"|"makemigration") python manage.py makemigrations --name $2 $3
                       ;;

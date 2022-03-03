@@ -2,7 +2,7 @@ FROM python:3.8
 
 ENV PYTHONUNBUFFERED 1
 
-COPY ./Repositorium /repositorium/Repositorium
+COPY ./repositorium /repositorium/repositorium
 COPY ./manage.py /repositorium/
 COPY ./requirements.txt /repositorium/
 COPY ./repositorium.sh /repositorium/
