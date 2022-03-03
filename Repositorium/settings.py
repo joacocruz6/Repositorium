@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import jupyterlab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -114,3 +116,27 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+DJANGO_ALLOW_ASYNC_UNSAFE = True
+
+## Jupyter stuff
+SHELL_PLUS = "ipython"
+SHELL_PLUS_PRINT_SQL = True
+NOTEBOOK_ARGUMENTS = [
+    "--ip",
+    "0.0.0.0",
+    "--port",
+    "8001",
+    "--allow-root",
+    "--no-browser",
+    "--NotebookApp.default_url",
+    "/lab",
+]
+
+IPYTHON_ARGUMENTS = [
+    "--ext",
+    "django_extension.managements.notebook_extension",
+    "--debug",
+]
+
+IPYTHON_KERNEL_DISPLAY_NAME = "Django Shell-Plus"

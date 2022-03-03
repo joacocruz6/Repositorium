@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 COPY ./Repositorium /repositorium/Repositorium
 COPY ./manage.py /repositorium/
 COPY ./requirements.txt /repositorium/
-
+COPY ./repositorium.sh /repositorium/
 
 RUN chmod -R 755 /repositorium/
 WORKDIR /repositorium/
@@ -14,5 +14,6 @@ RUN apt-get update
 RUN pip install -r requirements.txt
 RUN adduser repositorium
 USER repositorium
+RUN echo "source /repositorium/repositorium.sh" >> ~/.bashrc
 
 CMD gunicorn Repositorium.wsgi:application --bind 0.0.0.0:$PORT
