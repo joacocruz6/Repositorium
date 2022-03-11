@@ -6,3 +6,7 @@ from repositorium.utils.models import BaseUUIDModel
 
 class Categories(BaseUUIDModel):
     name = models.CharField(max_length=150)
+
+
+class System(BaseUUIDModel):
+    name = models.CharField(max_length=150)
