@@ -3,7 +3,8 @@
 function repositorium(){
     case "$1" in
     "install")
-            if [[ "$#" -eq 0]] ; then
+            if [ "$#" -eq 0 ]
+            then
                 pip install "$@"
             else
                 pip install -r requirements.txt
