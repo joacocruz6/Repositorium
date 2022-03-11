@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "repositorium.api",
     "repositorium.users",
+    "repositorium.learning_resources",
 ]
 
 MIDDLEWARE = [
