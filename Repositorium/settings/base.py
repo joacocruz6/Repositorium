@@ -164,4 +164,4 @@ IPYTHON_ARGUMENTS = [
 
 IPYTHON_KERNEL_DISPLAY_NAME = "Django Shell-Plus"
 
-AUTH_USER_MODEL = "repositorium.users.User"
+AUTH_USER_MODEL = "users.User"
