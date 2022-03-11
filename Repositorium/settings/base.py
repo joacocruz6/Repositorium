@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "rest_framework",
     "repositorium.api",
+    "repositorium.users",
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,5 @@ IPYTHON_ARGUMENTS = [
 ]
 
 IPYTHON_KERNEL_DISPLAY_NAME = "Django Shell-Plus"
+
+AUTH_USER_MODEL = "repositorium.users.User"
