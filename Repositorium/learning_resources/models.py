@@ -1,15 +1,19 @@
 from django.db import models
 from repositorium.utils.models import BaseUUIDModel
 
-# Create your models here.
-
 
 class Categories(BaseUUIDModel):
     name = models.CharField(max_length=150, unique=True)
 
+    def __str__(self):
+        return f"Category {self.name}"
+
 
 class System(BaseUUIDModel):
     name = models.CharField(max_length=150, unique=True)
+
+    def __str__(self):
+        return f"System {self.name}"
 
 
 class LearningObject(BaseUUIDModel):
@@ -34,6 +38,13 @@ class LearningObject(BaseUUIDModel):
     )
     used_by = models.ManyToManyField(to="users.User", through="Ratings")
     extra_data = models.JSONField(default=dict, null=True, blank=True)
+
+    def __str__(self):
+        return f"LearningObject {self.name}"
+
+    @property
+    def is_forked(self):
+        return self.forked != None
 
 
 class Ratings(BaseUUIDModel):
