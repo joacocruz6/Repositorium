@@ -22,4 +22,21 @@ class LearningObject(BaseUUIDModel):
         null=True,
         blank=True,
     )
-    created_by = models.ForeignKey(to="users.User", on_delete=models.DO_NOTHING)
+    created_by = models.ForeignKey(
+        to="users.User", on_delete=models.DO_NOTHING, related_name="learning_objects"
+    )
+    created_on = models.ForeignKey(
+        to=System, on_delete=models.DO_NOTHING, related_name="learning_objects"
+    )
+    used_by = models.ManyToManyField(to="users.User", through="Ratings")
+    extra_data = models.JSONField()
+
+
+class Ratings(BaseUUIDModel):
+    user = models.ForeignKey(
+        to="users.User", on_delete=models.CASCADE, related_name="ratings"
+    )
+    learning_object = models.ForeignKey(
+        to="users.User", on_delete=models.CASCADE, related_name="ratings"
+    )
+    rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
