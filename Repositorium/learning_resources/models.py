@@ -26,10 +26,14 @@ class LearningObject(BaseUUIDModel):
         to="users.User", on_delete=models.DO_NOTHING, related_name="learning_objects"
     )
     created_on = models.ForeignKey(
-        to=System, on_delete=models.DO_NOTHING, related_name="learning_objects"
+        to=System,
+        on_delete=models.DO_NOTHING,
+        related_name="learning_objects",
+        null=True,
+        blank=True,
     )
     used_by = models.ManyToManyField(to="users.User", through="Ratings")
-    extra_data = models.JSONField()
+    extra_data = models.JSONField(default=dict, null=True, blank=True)
 
 
 class Ratings(BaseUUIDModel):
