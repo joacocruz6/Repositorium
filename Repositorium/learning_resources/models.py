@@ -37,6 +37,6 @@ class Ratings(BaseUUIDModel):
         to="users.User", on_delete=models.CASCADE, related_name="ratings"
     )
     learning_object = models.ForeignKey(
-        to="users.User", on_delete=models.CASCADE, related_name="ratings"
+        to=LearningObject, on_delete=models.CASCADE, related_name="ratings"
     )
     rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
