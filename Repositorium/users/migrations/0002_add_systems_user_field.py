@@ -5,10 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ("learning_resources", "0003_add_systems_user_field"),
-        ("users", "0001_create_user_model"),
-    ]
+    dependencies = [("users", "0001_create_user_model")]
 
     operations = [
         migrations.AddField(
