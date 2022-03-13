@@ -5,15 +5,15 @@ from repositorium.utils.models import BaseUUIDModel
 
 
 class Categories(BaseUUIDModel):
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, unique=True)
 
 
 class System(BaseUUIDModel):
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, unique=True)
 
 
 class LearningObject(BaseUUIDModel):
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, unique=True)
     categories = models.ManyToManyField(to=Categories, related_name="learning_objects")
     content = models.TextField()
     forked = models.ForeignKey(
