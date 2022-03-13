@@ -9,6 +9,9 @@ class User(PermissionsMixin, AbstractBaseUser):
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     created_at = models.DateTimeField(auto_now_add=True)
+    systems = models.ManyToManyField(
+        to="learning_resources.System", related_name="users"
+    )
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
