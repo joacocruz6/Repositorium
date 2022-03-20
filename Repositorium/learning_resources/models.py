@@ -2,7 +2,7 @@ from django.db import models
 from repositorium.utils.models import BaseUUIDModel
 
 
-class Categories(BaseUUIDModel):
+class Category(BaseUUIDModel):
     name = models.CharField(max_length=150, unique=True)
 
     def __str__(self):
@@ -18,7 +18,7 @@ class System(BaseUUIDModel):
 
 class LearningObject(BaseUUIDModel):
     name = models.CharField(max_length=150, unique=True)
-    categories = models.ManyToManyField(to=Categories, related_name="learning_objects")
+    categories = models.ManyToManyField(to=Category, related_name="learning_objects")
     content = models.TextField()
     forked = models.ForeignKey(
         to="learning_resources.LearningObject",
