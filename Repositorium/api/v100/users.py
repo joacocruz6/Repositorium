@@ -8,7 +8,7 @@ from repositorium.users import managers as user_manager
 
 
 class UserViewSet(ViewSet):
-    def create(self, request: Request) -> Response:
+    def create(self, request: Request, *args, **kwargs) -> Response:
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.data["email"]

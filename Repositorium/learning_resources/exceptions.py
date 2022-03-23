@@ -8,3 +8,15 @@ class CategoryAlreadyExists(CategoryException):
 
 class CategoryDoesNotExists(CategoryException):
     pass
+
+
+class SystemException(Exception):
+    pass
+
+
+class SystemAlreadyExists(SystemException):
+    pass
+
+
+class SystemDoesNotExists(SystemException):
+    pass
