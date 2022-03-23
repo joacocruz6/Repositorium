@@ -9,8 +9,10 @@ from repositorium.api.serializers.category import (
 
 
 class CategoryViewSet(ViewSet):
-    def create(self, request: Request) -> Response:
-        pass
+    def create(self, request: Request, *args, **kwargs) -> Response:
+        serializer = CategoryCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            name = serializer.data["name"]
 
     def list(self, request: Request) -> Response:
         pass

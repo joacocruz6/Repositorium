@@ -1,3 +1,4 @@
+from typing import Tuple
 from repositorium.learning_resources.models import Category
 from repositorium.learning_resources.exceptions import (
     CategoryAlreadyExists,
@@ -10,11 +11,9 @@ def category_exists(name: str) -> bool:
 
 
 def create_category(name: str) -> Category:
-    if not category_exists:
-        category = Category.objects.create(name=name)
-        return category
-    else:
+    if category_exists(name=name):
         raise CategoryAlreadyExists
+    return Category.objects.create(name=name)
 
 
 def get_category(name: str) -> Category:
@@ -22,3 +21,7 @@ def get_category(name: str) -> Category:
     if category is None:
         raise CategoryDoesNotExists
     return category
+
+
+def get_or_create_category(name: str) -> Tuple[Category, bool]:
+    return Category.objects.get_or_create(name=name)
