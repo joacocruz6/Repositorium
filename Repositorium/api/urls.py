@@ -1,5 +1,8 @@
-from django.urls import path
+from django.urls import path, include
 from repositorium.api.views import healthz
 
 app_name = "api"
-urlpatterns = [path("healtz/", healthz, name="health")]
+urlpatterns = [
+    path("healtz/", healthz, name="health"),
+    path("v100/", include("repositorium.api.v100.urls")),
+]
