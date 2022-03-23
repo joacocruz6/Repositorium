@@ -4,6 +4,7 @@ from repositorium.learning_resources.exceptions import (
     CategoryAlreadyExists,
     CategoryDoesNotExists,
 )
+from django.db.models import QuerySet
 
 
 def category_exists(name: str) -> bool:
@@ -25,3 +26,7 @@ def get_category(name: str) -> Category:
 
 def get_or_create_category(name: str) -> Tuple[Category, bool]:
     return Category.objects.get_or_create(name=name)
+
+
+def get_all_categories() -> QuerySet:
+    return Category.objects.all()
