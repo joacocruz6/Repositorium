@@ -36,16 +36,29 @@ def test_create_category():
     assert category.name == name
 
 
+@pytest.mark.parametrize(
+    "function, parameter",
+    [
+        (category_manager.get_category_by_name, "Cosme Fulanito"),
+        (category_manager.get_category_by_uuid, "e4cacd98-8811-4f88-afef-37e72718ba83"),
+    ],
+)
 @pytest.mark.django_db
-def test_get_non_existant_category():
-    name = "Cosme Fulanito"
+def test_get_non_existant_category(function, parameter):
     with pytest.raises(CategoryDoesNotExists):
-        category_manager.get_category(name=name)
+        function(parameter)
 
 
+@pytest.mark.parametrize(
+    "function, attribute",
+    [
+        (category_manager.get_category_by_name, "name"),
+        (category_manager.get_category_by_uuid, "uuid"),
+    ],
+)
 @pytest.mark.django_db
-def test_get_category(data_structure_category):
-    category = category_manager.get_category(name=data_structure_category.name)
+def test_get_category(data_structure_category, function, attribute):
+    category = function(getattr(data_structure_category, attribute))
     assert category == data_structure_category
 
 

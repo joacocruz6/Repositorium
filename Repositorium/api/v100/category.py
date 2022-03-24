@@ -58,7 +58,7 @@ class CategoryViewSet(ViewSet):
 
     def retrieve(self, request: Request, pk: str = None, *args, **kwargs) -> Response:
         try:
-            category = category_manager.get_category(name=pk)
+            category = category_manager.get_category_by_uuid(name=pk)
         except CategoryDoesNotExists:
             return Response(status=status.HTTP_404_NOT_FOUND)
         else:

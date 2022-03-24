@@ -1,4 +1,5 @@
-from typing import Tuple
+from uuid import UUID
+from typing import Tuple, Union
 from repositorium.learning_resources.models import Category
 from repositorium.learning_resources.exceptions import (
     CategoryAlreadyExists,
@@ -17,8 +18,15 @@ def create_category(name: str) -> Category:
     return Category.objects.create(name=name)
 
 
-def get_category(name: str) -> Category:
+def get_category_by_name(name: str) -> Category:
     category = Category.objects.filter(name=name).first()
+    if category is None:
+        raise CategoryDoesNotExists
+    return category
+
+
+def get_category_by_uuid(uuid: Union[str, UUID]) -> Category:
+    category = Category.objects.filter(uuid=uuid).first()
     if category is None:
         raise CategoryDoesNotExists
     return category
