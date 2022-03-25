@@ -62,6 +62,7 @@ class CreateSerializerMixin(SerializerViewSetMixin):
 
 class ListSerializerMixin(SerializerViewSetMixin):
     resource_plural_name: str = None
+    per_page_default: int = 10
 
     def get_resource_plural_name(self) -> str:
         if self.resource_plural_name is None:
@@ -76,7 +77,7 @@ class ListSerializerMixin(SerializerViewSetMixin):
         )
 
     def list(self, request: Request, *args, **kwargs) -> Response:
-        per_page = request.query_params.get("per_page", 10)
+        per_page = request.query_params.get("per_page", self.per_page_default)
         page_number = request.query_params.get("page_number", 1)
         objs = self.get_objects(*args, **kwargs)
         paginator = Paginator(objs, per_page)
