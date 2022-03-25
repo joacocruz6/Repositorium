@@ -1,7 +1,7 @@
-from rest_framework.viewsets import ViewSet
+from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.viewsets import ViewSet
 
 from repositorium.api.serializers.users import UserCreateSerializer, UserSerializer
 from repositorium.users import managers as user_manager

@@ -1,10 +1,11 @@
 import pytest
+from mixer.backend.django import mixer
+
 from repositorium.learning_resources.exceptions import (
     CategoryAlreadyExists,
     CategoryDoesNotExists,
 )
 from repositorium.learning_resources.managers import category as category_manager
-from mixer.backend.django import mixer
 
 
 @pytest.fixture

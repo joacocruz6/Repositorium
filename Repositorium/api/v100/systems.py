@@ -1,4 +1,5 @@
 from typing import Dict
+
 from rest_framework.viewsets import ViewSet
 
 from repositorium.api.serializers.systems import (

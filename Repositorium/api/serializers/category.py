@@ -1,5 +1,6 @@
-from repositorium.api.serializers.base import BaseSerializer
 from rest_framework import serializers
+
+from repositorium.api.serializers.base import BaseSerializer
 
 
 class CategorySerializer(BaseSerializer):

@@ -1,10 +1,11 @@
 import pytest
-from repositorium.learning_resources.managers import system as system_manager
 from mixer.backend.django import mixer
+
 from repositorium.learning_resources.exceptions import (
     SystemAlreadyExists,
     SystemDoesNotExists,
 )
+from repositorium.learning_resources.managers import system as system_manager
 
 
 @pytest.fixture

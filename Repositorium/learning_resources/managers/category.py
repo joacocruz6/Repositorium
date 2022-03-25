@@ -1,11 +1,13 @@
-from uuid import UUID
 from typing import Tuple, Union
-from repositorium.learning_resources.models import Category
+from uuid import UUID
+
+from django.db.models import QuerySet
+
 from repositorium.learning_resources.exceptions import (
     CategoryAlreadyExists,
     CategoryDoesNotExists,
 )
-from django.db.models import QuerySet
+from repositorium.learning_resources.models import Category
 
 
 def category_exists(name: str) -> bool:

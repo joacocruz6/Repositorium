@@ -1,4 +1,5 @@
 from django.db import models
+
 from repositorium.utils.models import BaseUUIDModel
 
 

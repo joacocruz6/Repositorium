@@ -1,8 +1,10 @@
 from typing import Dict
+
 from rest_framework.viewsets import ViewSet
+
 from repositorium.api.serializers.category import (
-    CategorySerializer,
     CategoryCreateSerializer,
+    CategorySerializer,
 )
 from repositorium.learning_resources.managers import category as category_manager
 from repositorium.utils.mixins import (

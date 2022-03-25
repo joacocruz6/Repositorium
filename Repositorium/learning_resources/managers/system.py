@@ -1,11 +1,13 @@
-from uuid import UUID
 from typing import Tuple, Union
+from uuid import UUID
+
 from django.db.models import QuerySet
-from repositorium.learning_resources.models import System
+
 from repositorium.learning_resources.exceptions import (
     SystemAlreadyExists,
     SystemDoesNotExists,
 )
+from repositorium.learning_resources.models import System
 
 
 def system_exists(name: str) -> bool:

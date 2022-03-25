@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from django.utils.html import conditional_escape
+from rest_framework import serializers
+
 from repositorium.api.serializers.base import BaseSerializer
 
 

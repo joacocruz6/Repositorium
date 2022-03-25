@@ -1,7 +1,8 @@
-from uuid import UUID
 from typing import Union
-from repositorium.users.models import User
+from uuid import UUID
+
 from repositorium.users.exceptions import UserDoesNotExists
+from repositorium.users.models import User
 
 
 def get_user_by_email(email: str) -> User:
