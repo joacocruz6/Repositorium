@@ -1,8 +1,6 @@
 from django.utils.html import conditional_escape
 from rest_framework import serializers
 
-from repositorium.api.serializers.base import BaseSerializer
-
 
 class UserCreateSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -17,7 +15,8 @@ class UserCreateSerializer(serializers.Serializer):
         return conditional_escape(value)
 
 
-class UserSerializer(BaseSerializer):
+class UserSerializer(serializers.Serializer):
     email = serializers.EmailField()
     first_name = serializers.CharField(max_length=150)
     last_name = serializers.CharField(max_length=150)
+    created_at = serializers.DateTimeField()
