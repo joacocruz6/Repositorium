@@ -13,7 +13,7 @@ class UserCreateSerializer(serializers.Serializer):
     def validate_first_name(self, value):
         return conditional_escape(value)
 
-    def last_name(self, value):
+    def validate_last_name(self, value):
         return conditional_escape(value)
 
 
