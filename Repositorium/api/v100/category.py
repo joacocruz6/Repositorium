@@ -1,17 +1,10 @@
+from typing import Dict
 from rest_framework.viewsets import ViewSet
-from rest_framework import status
-from rest_framework.request import Request
-from rest_framework.response import Response
 from repositorium.api.serializers.category import (
     CategorySerializer,
     CategoryCreateSerializer,
 )
 from repositorium.learning_resources.managers import category as category_manager
-from repositorium.learning_resources.exceptions import (
-    CategoryAlreadyExists,
-    CategoryDoesNotExists,
-)
-from django.core.paginator import Paginator, EmptyPage
 from repositorium.utils.mixins import (
     CreateSerializerMixin,
     ListSerializerMixin,
