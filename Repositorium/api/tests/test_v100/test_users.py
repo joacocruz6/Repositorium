@@ -31,3 +31,16 @@ def test_create_user_view(client, get_create_url, user_basename):
     response = client.post(url, data=data, content_type="application/json")
     assert response.status_code == 201
     assert response.data == expected_data
+
+
+def test_already_created_user(user, client, get_create_url, user_basename):
+    url = get_create_url(user_basename)
+    data = {
+        "email": user.email,
+        "password": "some_password",
+        "first_name": "Joaquin",
+        "last_name": "Cruz",
+    }
+    response = client.post(url, data=data, content_type="application/json")
+    assert response.status_code == 400
+    assert response.data is None

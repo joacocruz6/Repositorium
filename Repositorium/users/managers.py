@@ -17,3 +17,7 @@ def create_user(email: str, first_name: str, last_name: str, password: str) -> U
     user.set_password(password)
     user.save()
     return user
+
+
+def check_user_exists(email: str) -> bool:
+    return User.objects.filter(email=email).exists()
