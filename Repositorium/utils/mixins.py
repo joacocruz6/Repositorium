@@ -45,7 +45,7 @@ class CreateSerializerMixin(SerializerViewSetMixin):
         )
 
     def create(self, request: Request, *args, **kwargs) -> Response:
-        serializer = self.get_create_serializer_class()(request.data)
+        serializer = self.get_create_serializer_class()(data=request.data)
         if serializer.is_valid():
             try:
                 instance = self.create_object(serializer_data=serializer.data)

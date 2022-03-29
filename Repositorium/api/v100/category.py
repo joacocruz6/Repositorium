@@ -19,7 +19,7 @@ class CategoryViewSet(
 ):
     serializer_class = CategorySerializer
     create_serializer_class = CategoryCreateSerializer
-    already_exists_errors = {"name": ["Category with that name already exists."]}
+    already_exists_message = {"name": ["Category with that name already exists."]}
     resource_plural_name = "categories"
 
     def create_object(self, serializer_data: Dict, *args, **kwargs):
@@ -27,7 +27,7 @@ class CategoryViewSet(
         return category_manager.create_category(name=name)
 
     def get_objects(self, *args, **kwargs):
-        return category_manager.get_all_categories()
+        return category_manager.get_all_categories().order_by("-created_at")
 
     def get_object(self, pk: str, *args, **kwargs):
         return category_manager.get_category_by_uuid(uuid=pk)

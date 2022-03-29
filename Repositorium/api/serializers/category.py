@@ -9,3 +9,6 @@ class CategorySerializer(BaseSerializer):
 
 class CategoryCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150)
+
+    def validate_name(self, value: str) -> str:
+        return value.capitalize()
