@@ -23,3 +23,15 @@ class SystemAlreadyExists(SystemException, AlreadyExistsError):
 
 class SystemDoesNotExists(SystemException, DoesNotExistsError):
     pass
+
+
+class LearningObjectException(Exception):
+    pass
+
+
+class LearningObjectDoesNotExists(LearningObjectException, DoesNotExistsError):
+    pass
+
+
+class LearningObjectAlreadyExists(LearningObjectException, AlreadyExistsError):
+    pass
