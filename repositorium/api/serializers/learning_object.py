@@ -6,9 +6,9 @@ from repositorium.api.serializers.category import CategorySerializer
 
 class LearningObjectCreateSerializer(serializers.Serializer):
     title = serializers.CharField()
-    categories = serializers.ListField(child=serializers.CharField())
     content = serializers.CharField()
-    system = serializers.CharField()
+    categories = serializers.ListField(child=serializers.CharField())
+    system_uuid = serializers.UUIDField()
     extra_data = serializers.JSONField()
 
 
