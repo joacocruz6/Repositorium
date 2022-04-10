@@ -48,9 +48,9 @@ def learning_object(user, system, categories):
 def test_create_learning_object(user, system, categories):
     extra_data = {"a": 3}
     content = "This is the content of the learning object"
-    name = "Test object"
+    title = "Test object"
     learning_object = learning_objects_manager.create_learning_object(
-        name=name,
+        title=title,
         content=content,
         categories=categories,
         created_on=system,
@@ -63,12 +63,12 @@ def test_create_learning_object(user, system, categories):
 
 
 def test_already_name_taken_learning_object(user, system, categories):
-    name = "Test"
-    mixer.blend("learning_resources.LearningObject", name=name)
+    title = "Test"
+    mixer.blend("learning_resources.LearningObject", title=title)
     content = "Some content"
     with pytest.raises(LearningObjectAlreadyExists):
         learning_objects_manager.create_learning_object(
-            name=name,
+            title=title,
             content=content,
             categories=categories,
             created_on=system,
@@ -80,7 +80,7 @@ def test_already_name_taken_learning_object(user, system, categories):
     "attr_name, function",
     [
         ("uuid", learning_objects_manager.get_learning_object_by_uuid),
-        ("name", learning_objects_manager.get_learning_object_by_name),
+        ("title", learning_objects_manager.get_learning_object_by_title),
     ],
 )
 def test_get_learning_object(attr_name, function, learning_object):
@@ -93,7 +93,7 @@ def test_get_learning_object(attr_name, function, learning_object):
     "attr_name, function",
     [
         ("uuid", learning_objects_manager.get_learning_object_by_uuid),
-        ("name", learning_objects_manager.get_learning_object_by_name),
+        ("title", learning_objects_manager.get_learning_object_by_title),
     ],
 )
 def test_get_non_existant_learning_object(attr_name, function, learning_object):
@@ -107,12 +107,12 @@ def test_get_non_existant_learning_object(attr_name, function, learning_object):
 def test_fork_learning_object(learning_object, user):
     system = mixer.blend("learning_resources.System")
     expected_name = (
-        f"Fork of {learning_object.name} by {user.full_name} at {arrow.now().datetime}"
+        f"Fork of {learning_object.title} by {user.full_name} at {arrow.now().datetime}"
     )
     new_learning_object = learning_objects_manager.fork_learning_object(
         learning_object, user, system
     )
-    assert new_learning_object.name == expected_name
+    assert new_learning_object.title == expected_name
     assert new_learning_object.content == learning_object.content
     assert new_learning_object.categories.count() == learning_object.categories.count()
     assert new_learning_object.created_on == system

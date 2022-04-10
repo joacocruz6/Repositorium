@@ -18,7 +18,7 @@ class System(BaseUUIDModel):
 
 
 class LearningObject(BaseUUIDModel):
-    name = models.CharField(max_length=150, unique=True)
+    title = models.CharField(max_length=150, unique=True)
     categories = models.ManyToManyField(to=Category, related_name="learning_objects")
     content = models.TextField()
     forked = models.ForeignKey(
@@ -37,7 +37,7 @@ class LearningObject(BaseUUIDModel):
         null=True,
         blank=True,
     )
-    used_by = models.ManyToManyField(to="users.User", through="Ratings")
+    rated_by = models.ManyToManyField(to="users.User", through="Ratings")
     extra_data = models.JSONField(default=dict, null=True, blank=True)
 
     def __str__(self):
