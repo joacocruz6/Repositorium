@@ -52,6 +52,6 @@ def get_or_create_categories(category_names: List[str]) -> Tuple[List[Category],
         missing_categories = category_names - created_categories_names
         categories_to_create = [Category(name=name) for name in missing_categories]
         Category.objects.bulk_create(categories_to_create)
-        return Category.objects.filter(name__in=category_names)
+        return Category.objects.filter(name__in=category_names), True
     else:
-        return already_created_categories
+        return already_created_categories, False
