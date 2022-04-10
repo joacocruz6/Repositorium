@@ -21,7 +21,7 @@ class SerializerViewSetMixin(object):
         return self.serializer_class
 
 
-class CreateSerializerMixin(SerializerViewSetMixin):
+class CreateSerializerViewSetMixin(object):
     create_serializer_class: type = None
     already_exists_errors: Dict = None
 
@@ -33,17 +33,19 @@ class CreateSerializerMixin(SerializerViewSetMixin):
         return self.create_serializer_class
 
     def get_already_exists_errors(self) -> Dict:
-        if self.already_exists_message is None:
+        if self.already_exists_errors is None:
             raise ImproperlyConfigured(
-                f"Missing alredy_exists_message configuration from {self.__class__}"
+                f"Missing already_exists_message configuration from {self.__class__}"
             )
-        return self.already_exists_message
+        return self.already_exists_errors
 
     def create_object(self, serializer_data: Dict, *args, **kwargs) -> Model:
         raise ImproperlyConfigured(
-            f"Missing definition of create_object method from {self.__class__}"
+            f"Missing definition of create_object from {self.__class__}"
         )
 
+
+class CreateSerializerMixin(CreateSerializerViewSetMixin, SerializerViewSetMixin):
     def create(self, request: Request, *args, **kwargs) -> Response:
         serializer = self.get_create_serializer_class()(data=request.data)
         if serializer.is_valid():
