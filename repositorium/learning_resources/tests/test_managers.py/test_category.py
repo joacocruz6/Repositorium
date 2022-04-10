@@ -74,3 +74,16 @@ def test_get_or_create_category(data_structure_category):
         name="Non existant name"
     )
     assert non_created_boolean
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    "category_names, expected_created", [(["hello", "goodbye"], True), ([], False)]
+)
+def test_get_or_create_categories(
+    category_names, expected_created, data_structure_category
+):
+    category_names.append(data_structure_category.name)
+    categories, created = category_manager.get_or_create_categories(category_names)
+    assert categories.count() == len(category_names)
+    assert created is expected_created
