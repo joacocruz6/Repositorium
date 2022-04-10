@@ -16,7 +16,7 @@ run:
 	@docker-compose up -d
 
 up: run
-	@docker exec -it repositorium_api_1 /bin/bash
+	@docker exec -it repositorium-api-1 /bin/bash
 
 stop:
 	@docker-compose stop
