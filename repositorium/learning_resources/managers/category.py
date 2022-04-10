@@ -1,4 +1,4 @@
-from typing import Tuple, Union
+from typing import List, Tuple, Union
 from uuid import UUID
 
 from django.db.models import QuerySet
@@ -40,3 +40,18 @@ def get_or_create_category(name: str) -> Tuple[Category, bool]:
 
 def get_all_categories() -> QuerySet:
     return Category.objects.all()
+
+
+def get_or_create_categories(category_names: List[str]) -> Tuple[List[Category], bool]:
+    already_created_categories = Category.objects.filter(name__in=category_names)
+    if already_created_categories.count() != len(category_names):
+        created_categories_names = set(
+            already_created_categories.values_list("name", flat=True)
+        )
+        category_names = set(category_names)
+        missing_categories = category_names - created_categories_names
+        categories_to_create = [Category(name=name) for name in missing_categories]
+        Category.objects.bulk_create(categories_to_create)
+        return Category.objects.filter(name__in=category_names)
+    else:
+        return already_created_categories
