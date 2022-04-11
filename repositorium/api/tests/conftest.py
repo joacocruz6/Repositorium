@@ -53,3 +53,13 @@ def user(user_email):
     yield mixer.blend(
         "users.User", email=user_email, first_name="Cosme", last_name="Fulanito"
     )
+
+
+@pytest.fixture
+def category():
+    yield mixer.blend("learning_resources.Category", name="Hey it's me")
+
+
+@pytest.fixture
+def system():
+    yield mixer.blend("learning_resources.System", name="Nintendo 64!!!")
