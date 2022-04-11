@@ -8,6 +8,8 @@ from rest_framework.viewsets import ViewSet
 
 from repositorium.api.serializers.learning_object import (
     LearningObjectCreateSerializer,
+    LearningObjectForkSerializer,
+    LearningObjectRateSerializer,
     LearningObjectSerializer,
 )
 from repositorium.learning_resources.exceptions import SystemDoesNotExists
@@ -69,14 +71,41 @@ class LearningObjectViewSet(
 
     @action(methods=["post"], detail=True, url_name="fork_learning_object")
     def fork(self, request: Request, pk: str = None, *args, **kwargs) -> Response:
-        pass
+        serializer = LearningObjectForkSerializer(data=request.data)
+        if serializer.is_valid():
+            system_uuid = serializer.data["system_uuid"]
+            try:
+                system = system_manager.get_system_by_uuid(uuid=system_uuid)
+                forked_by = request.user
+                original_learning_object = (
+                    learning_object_manager.get_learning_object_by_uuid(uuid=pk)
+                )
+                learning_object = learning_object_manager.fork_learning_object(
+                    original_learning_object=original_learning_object,
+                    forked_by=forked_by,
+                    forked_on=system,
+                )
+                learning_object_serializer = self.get_serializer_class()(
+                    instance=learning_object
+                )
+                return Response(
+                    data=learning_object_serializer.data, status=status.HTTP_201_CREATED
+                )
+            except SystemDoesNotExists:
+                data = {
+                    "errors": {"system_uuid": ["System with that uuid does not exist."]}
+                }
+                return Response(data=data, status=status.HTTP_404_NOT_FOUND)
+        else:
+            data = {"errors": serializer.errors}
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=["post"], detail=True, url_name="rate_learning_object")
     def rate(self, request: Request, pk: str = None, *args, **kwargs) -> Response:
-        pass
+        return Response(status=status.HTTP_200_OK)
 
     @action(methods=["get"], url_name="get_my_learning_objects")
     def my_learning_objects(
         self, request: Request, pk: str = None, *args, **kwargs
     ) -> Response:
-        pass
+        return Response(status=status.HTTP_200_OK)
