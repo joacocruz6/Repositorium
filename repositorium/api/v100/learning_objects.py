@@ -43,7 +43,7 @@ class LearningObjectViewSet(
         creator = self.request.user
 
         system = system_manager.get_system_by_uuid(uuid=system_uuid)
-        categories = category_manager.get_or_create_categories(
+        categories, _ = category_manager.get_or_create_categories(
             category_names=category_names
         )
         learning_object = learning_object_manager.create_learning_object(
