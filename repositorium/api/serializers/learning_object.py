@@ -41,4 +41,4 @@ class LearningObjectForkSerializer(serializers.Serializer):
 
 
 class LearningObjectRateSerializer(serializers.Serializer):
-    rating = serializers.DecimalField()
+    rating = serializers.DecimalField(max_digits=3, decimal_places=2)
