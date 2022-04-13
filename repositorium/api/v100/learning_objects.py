@@ -104,7 +104,7 @@ class LearningObjectViewSet(
     def rate(self, request: Request, pk: str = None, *args, **kwargs) -> Response:
         return Response(status=status.HTTP_200_OK)
 
-    @action(methods=["get"], url_name="get_my_learning_objects")
+    @action(methods=["get"], detail=False, url_name="get_my_learning_objects")
     def my_learning_objects(
         self, request: Request, pk: str = None, *args, **kwargs
     ) -> Response:
