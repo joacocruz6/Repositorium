@@ -23,7 +23,7 @@ function repositorium(){
                ;;
     "up") python manage.py runserver 0.0.0.0:8000
           ;;
-    "test") pytest $2
+    "test"|"tests") pytest $2
             ;;
     *)
         echo "install: Install requirements or provided package"
