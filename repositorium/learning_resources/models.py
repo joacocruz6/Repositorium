@@ -27,9 +27,7 @@ class LearningObject(BaseUUIDModel):
         null=True,
         blank=True,
     )
-    created_by = models.ForeignKey(
-        to="users.User", on_delete=models.DO_NOTHING, related_name="learning_objects"
-    )
+    creator_email = models.EmailField(db_index=True)
     created_on = models.ForeignKey(
         to=System,
         on_delete=models.DO_NOTHING,
