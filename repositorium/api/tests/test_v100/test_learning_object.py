@@ -110,9 +110,3 @@ def test_retrieve_learning_object(
     client.force_login(user)
     response = client.get(url, content_type="application/json")
     assert response.status_code == 200
-
-
-def test_retrieve_non_existant_learning_object(
-    client, user, get_method_url, learning_object_basename
-):
-    pass
