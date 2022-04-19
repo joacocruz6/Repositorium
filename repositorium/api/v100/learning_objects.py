@@ -1,6 +1,7 @@
 from typing import Dict
 
 from django.core.paginator import EmptyPage, Paginator
+from django.db.models import Model, QuerySet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -10,13 +11,15 @@ from rest_framework.viewsets import ViewSet
 from repositorium.api.serializers.learning_object import (
     LearningObjectCreateSerializer,
     LearningObjectForkSerializer,
-    LearningObjectRateSerializer,
     LearningObjectSerializer,
 )
 from repositorium.learning_resources.exceptions import SystemDoesNotExists
 from repositorium.learning_resources.managers import category as category_manager
 from repositorium.learning_resources.managers import (
     learning_objects as learning_object_manager,
+)
+from repositorium.learning_resources.managers import (
+    learning_objects as learning_objects_manager,
 )
 from repositorium.learning_resources.managers import system as system_manager
 from repositorium.learning_resources.models import LearningObject
@@ -36,6 +39,12 @@ class LearningObjectViewSet(
         "title": ["Learning object with that title already exists."]
     }
     resource_plural_name = "learning_objects"
+
+    def get_object(self, pk: str, *args, **kwargs) -> Model:
+        return learning_objects_manager.get_learning_object_by_uuid(uuid=pk)
+
+    def get_objects(self, *args, **kwargs) -> QuerySet:
+        return learning_objects_manager.get_all_learning_objects()
 
     def create_object(self, serializer_data: Dict, *args, **kwargs) -> LearningObject:
         title = serializer_data["title"]
