@@ -63,3 +63,15 @@ def category():
 @pytest.fixture
 def system():
     yield mixer.blend("learning_resources.System", name="Nintendo 64!!!")
+
+
+@pytest.fixture
+def learning_object(user, category, system):
+    learning_object = mixer.blend(
+        "learning_resources.LearningObject",
+        title="Testing in Java",
+        created_on=system,
+        created_by=user,
+    )
+    learning_object.categories.add(category)
+    yield learning_object
