@@ -1,5 +1,6 @@
 from typing import Dict
 
+from django.core.paginator import EmptyPage, Paginator
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -108,4 +109,24 @@ class LearningObjectViewSet(
     def my_learning_objects(
         self, request: Request, pk: str = None, *args, **kwargs
     ) -> Response:
-        return Response(status=status.HTTP_200_OK)
+        per_page = request.query_params.get("per_page", self.per_page_default)
+        page_number = request.query_params.get("page_number", 1)
+        learning_objects = self.get_objects()
+        learning_objects = learning_objects.filter(created_by=request.user).order_by(
+            "-created_by"
+        )
+        paginator = Paginator(learning_objects, per_page)
+        key = self.get_resource_plural_name()
+        try:
+            page = paginator.get_page(page_number)
+        except EmptyPage:
+            data = {"page_number": page_number, "has_next_page": False, key: []}
+            return Response(status=status.HTTP_204_NO_CONTENT, data=data)
+        else:
+            serializer = self.get_serializer_class()(page.object_list, many=True)
+            data = {
+                "page_number": page_number,
+                "has_next_page": page.has_next(),
+                key: serializer.data,
+            }
+            return Response(status=status.HTTP_200_OK, data=data)
