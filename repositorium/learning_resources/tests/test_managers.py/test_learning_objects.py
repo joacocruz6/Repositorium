@@ -39,7 +39,7 @@ def learning_object(user, system, categories):
         name=name,
         content=content,
         created_on=system,
-        created_by=user,
+        creator_email=user.email,
     )
     learning_object.categories.add(*categories)
     yield learning_object
@@ -54,11 +54,11 @@ def test_create_learning_object(user, system, categories):
         content=content,
         categories=categories,
         created_on=system,
-        created_by=user,
+        creator_email=user.email,
         extra_data=extra_data,
     )
     assert learning_object.created_on == system
-    assert learning_object.created_by == user
+    assert learning_object.creator_email == user.email
     assert learning_object.categories.count() == len(categories)
 
 
@@ -72,7 +72,7 @@ def test_already_name_taken_learning_object(user, system, categories):
             content=content,
             categories=categories,
             created_on=system,
-            created_by=user,
+            creator_email=user.email,
         )
 
 

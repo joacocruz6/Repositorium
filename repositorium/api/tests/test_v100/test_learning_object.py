@@ -38,7 +38,7 @@ def test_create_learning_object_view(
     assert len(response.data["extra_data"]) == 1
     assert response.data["extra_data"]["renders"] == "latex"
     assert not response.data["is_forked"]
-    assert response.data["creator_name"] == user.full_name
+    assert response.data["creator_email"] == user.email
     assert response.data["system"] == system.name
     assert response.data["average_rating"] is None
 

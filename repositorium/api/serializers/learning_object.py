@@ -17,17 +17,14 @@ class LearningObjectSerializer(BaseSerializer):
     content = serializers.CharField()
     categories = CategorySerializer(many=True)
     extra_data = serializers.JSONField()
+    creator_email = serializers.EmailField()
 
     # Property
     is_forked = serializers.BooleanField()
 
     # Method fields
-    creator_name = serializers.SerializerMethodField()
     system = serializers.SerializerMethodField()
     average_rating = serializers.SerializerMethodField()
-
-    def get_creator_name(self, instance) -> str:
-        return instance.created_by.full_name
 
     def get_system(self, instance) -> str:
         return instance.created_on.name

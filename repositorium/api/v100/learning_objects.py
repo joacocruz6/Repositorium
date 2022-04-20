@@ -52,7 +52,7 @@ class LearningObjectViewSet(
         category_names = serializer_data["categories"]
         system_uuid = serializer_data["system_uuid"]
         extra_data = serializer_data["extra_data"]
-        creator = self.request.user
+        creator_email = self.request.user.email
 
         system = system_manager.get_system_by_uuid(uuid=system_uuid)
         categories, _ = category_manager.get_or_create_categories(
@@ -63,7 +63,7 @@ class LearningObjectViewSet(
             content=content,
             categories=categories,
             created_on=system,
-            created_by=creator,
+            creator_email=creator_email,
             extra_data=extra_data,
         )
         return learning_object
