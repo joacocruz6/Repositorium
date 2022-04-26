@@ -6,10 +6,10 @@ from repositorium.api.v100.systems import SystemViewSet
 from repositorium.api.v100.users import UserViewSet
 
 router = routers.SimpleRouter()
-router.register(r"categories", CategoryViewSet, basename="category")
-router.register(r"users", UserViewSet, basename="user")
-router.register(r"systems", SystemViewSet, basename="system")
-router.register(r"learning_objects", LearningObjectViewSet, basename="learning_object")
+router.register(r"category", CategoryViewSet, basename="category")
+router.register(r"user", UserViewSet, basename="user")
+router.register(r"system", SystemViewSet, basename="system")
+router.register(r"learning_object", LearningObjectViewSet, basename="learning_object")
 
 urlpatterns = []
 
