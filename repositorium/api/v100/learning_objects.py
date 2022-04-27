@@ -13,7 +13,10 @@ from repositorium.api.serializers.learning_object import (
     LearningObjectForkSerializer,
     LearningObjectSerializer,
 )
-from repositorium.learning_resources.exceptions import SystemDoesNotExists
+from repositorium.learning_resources.exceptions import (
+    LearningObjectDoesNotExists,
+    SystemDoesNotExists,
+)
 from repositorium.learning_resources.managers import category as category_manager
 from repositorium.learning_resources.managers import (
     learning_objects as learning_object_manager,
@@ -104,6 +107,15 @@ class LearningObjectViewSet(
             except SystemDoesNotExists:
                 data = {
                     "errors": {"system_uuid": ["System with that uuid does not exist."]}
+                }
+                return Response(data=data, status=status.HTTP_404_NOT_FOUND)
+            except LearningObjectDoesNotExists:
+                data = {
+                    "errors": {
+                        "learning_object": [
+                            "Learning object with that uuid does not exist."
+                        ]
+                    },
                 }
                 return Response(data=data, status=status.HTTP_404_NOT_FOUND)
         else:
