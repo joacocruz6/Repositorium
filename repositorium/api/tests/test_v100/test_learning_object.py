@@ -160,3 +160,12 @@ def test_fork_learning_object_non_existant_system(
     client.force_login(user)
     response = client.post(url, data=data, content_type="application/json")
     assert response.status_code == 404
+
+
+def test_get_my_learning_objects(client, user, get_extra_url, learning_object_basename):
+    mixer.cycle(5).blend("learning_resources.LearningObject", creator_email=user.email)
+    url_name = "get_my_learning_objects"
+    url = get_extra_url(learning_object_basename, url_name)
+    client.force_login(user)
+    response = client.get(url, content_type="application/json")
+    assert response.status_code == 200

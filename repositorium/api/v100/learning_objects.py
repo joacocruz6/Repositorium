@@ -127,15 +127,13 @@ class LearningObjectViewSet(
         return Response(status=status.HTTP_200_OK)
 
     @action(methods=["get"], detail=False, url_name="get_my_learning_objects")
-    def my_learning_objects(
-        self, request: Request, pk: str = None, *args, **kwargs
-    ) -> Response:
+    def my_learning_objects(self, request: Request, *args, **kwargs) -> Response:
         per_page = request.query_params.get("per_page", self.per_page_default)
         page_number = request.query_params.get("page_number", 1)
         learning_objects = self.get_objects()
-        learning_objects = learning_objects.filter(created_by=request.user).order_by(
-            "-created_by"
-        )
+        learning_objects = learning_objects.filter(
+            creator_email=request.user.email
+        ).order_by("-created_at")
         paginator = Paginator(learning_objects, per_page)
         key = self.get_resource_plural_name()
         try:
