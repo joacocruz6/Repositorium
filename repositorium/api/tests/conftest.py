@@ -44,6 +44,14 @@ def get_delete_url():
 
 
 @pytest.fixture
+def get_extra_url():
+    def _extra_url(basename: str, url_name: str, kwargs=None):
+        return reverse(f"api:{basename}-{url_name}", kwargs=kwargs)
+
+    yield _extra_url
+
+
+@pytest.fixture
 def user_email():
     yield "cosme@fulanito.com"
 
