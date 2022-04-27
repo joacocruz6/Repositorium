@@ -110,3 +110,53 @@ def test_retrieve_learning_object(
     client.force_login(user)
     response = client.get(url, content_type="application/json")
     assert response.status_code == 200
+
+
+@pytest.fixture
+def fork_url_name():
+    yield "fork_learning_object"
+
+
+def test_fork_learning_object(
+    client,
+    user,
+    learning_object,
+    get_extra_url,
+    learning_object_basename,
+    fork_url_name,
+):
+    system = mixer.blend("learning_resources.System")
+    kwargs = {"pk": str(learning_object.uuid)}
+    data = {"system_uuid": str(system.uuid)}
+    url = get_extra_url(learning_object_basename, fork_url_name, kwargs)
+    client.force_login(user)
+    response = client.post(url, data=data, content_type="application/json")
+    assert response.status_code == 201
+
+
+def test_fork_non_existant_learning_object(
+    client, user, get_extra_url, learning_object_basename, fork_url_name
+):
+    system = mixer.blend("learning_resources.System")
+    kwargs = {"pk": str(uuid.uuid4())}
+    data = {"system_uuid": str(system.uuid)}
+    url = get_extra_url(learning_object_basename, fork_url_name, kwargs)
+    client.force_login(user)
+    response = client.post(url, data=data, content_type="application/json")
+    assert response.status_code == 404
+
+
+def test_fork_learning_object_non_existant_system(
+    client,
+    user,
+    get_extra_url,
+    learning_object,
+    learning_object_basename,
+    fork_url_name,
+):
+    kwargs = {"pk": str(learning_object.uuid)}
+    data = {"system_uuid": str(uuid.uuid4())}
+    url = get_extra_url(learning_object_basename, fork_url_name, kwargs)
+    client.force_login(user)
+    response = client.post(url, data=data, content_type="application/json")
+    assert response.status_code == 404
