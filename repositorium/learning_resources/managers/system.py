@@ -1,4 +1,4 @@
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 from uuid import UUID
 
 from django.db.models import QuerySet
@@ -14,10 +14,10 @@ def system_exists(name: str) -> bool:
     return System.objects.filter(name=name).exists()
 
 
-def create_system(name: str) -> System:
+def create_system(name: str, creator_email: Optional[str] = None) -> System:
     if system_exists(name=name):
         raise SystemAlreadyExists
-    return System.objects.create(name=name)
+    return System.objects.create(name=name, creator_email=creator_email)
 
 
 def get_system_by_name(name: str) -> System:

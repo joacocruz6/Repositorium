@@ -24,7 +24,8 @@ class SystemViewSet(
 
     def create_object(self, serializer_data: Dict, *args, **kwargs):
         name = serializer_data["name"]
-        return system_manager.create_system(name=name)
+        creator_email = self.request.user.email
+        return system_manager.create_system(name=name, creator_email=creator_email)
 
     def get_objects(self, *args, **kwargs):
         return system_manager.get_all_systems()
