@@ -40,7 +40,6 @@ def test_create_learning_object_view(
     assert not response.data["is_forked"]
     assert response.data["creator_email"] == user.email
     assert response.data["system"] == system.name
-    assert response.data["average_rating"] is None
 
 
 def test_not_existant_system_create_learning_object(

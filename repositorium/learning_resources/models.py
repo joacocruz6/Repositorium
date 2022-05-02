@@ -35,7 +35,7 @@ class LearningObject(BaseUUIDModel):
         null=True,
         blank=True,
     )
-    rated_by = models.ManyToManyField(to="users.User", through="Ratings")
+    used_by = models.ManyToManyField(to="users.User", through="LearningObjectUsage")
     extra_data = models.JSONField(default=dict, null=True, blank=True)
 
     def __str__(self):
@@ -46,11 +46,18 @@ class LearningObject(BaseUUIDModel):
         return self.forked != None
 
 
-class Ratings(BaseUUIDModel):
+class LearningObjectUsage(BaseUUIDModel):
     user = models.ForeignKey(
-        to="users.User", on_delete=models.CASCADE, related_name="ratings"
+        to="users.User", on_delete=models.DO_NOTHING, related_name="has_used"
     )
     learning_object = models.ForeignKey(
-        to=LearningObject, on_delete=models.CASCADE, related_name="ratings"
+        to=LearningObject, on_delete=models.DO_NOTHING, related_name="+"
     )
-    rating = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    used_on = models.ForeignKey(
+        to=System,
+        on_delete=models.DO_NOTHING,
+        related_name="learning_objects_used",
+        null=True,
+        blank=True,
+    )
+    # Binary rating, I use the object or I don't

@@ -24,15 +24,11 @@ class LearningObjectSerializer(BaseSerializer):
 
     # Method fields
     system = serializers.SerializerMethodField()
-    average_rating = serializers.SerializerMethodField()
 
     def get_system(self, instance) -> str:
         if instance.created_on is None:
             return ""
         return instance.created_on.name
-
-    def get_average_rating(self, instance) -> float:
-        return None
 
 
 class LearningObjectForkSerializer(serializers.Serializer):
