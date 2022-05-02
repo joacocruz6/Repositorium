@@ -12,6 +12,7 @@ class Category(BaseUUIDModel):
 
 class System(BaseUUIDModel):
     name = models.CharField(max_length=150, unique=True)
+    creator_email = models.EmailField(null=True, blank=True)
 
     def __str__(self):
         return f"System {self.name}"
