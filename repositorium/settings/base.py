@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "rest_framework",
+    "rest_framework.authtoken",
     "repositorium.api",
     "repositorium.users",
     "repositorium.learning_resources",
@@ -165,3 +166,12 @@ IPYTHON_ARGUMENTS = [
 IPYTHON_KERNEL_DISPLAY_NAME = "Django Shell-Plus"
 
 AUTH_USER_MODEL = "users.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": {
+        "rest_framework.authentication.TokenAuthentication",
+    },
+    "DEFAULT_PERMISSION_CLASSES": {
+        "rest_framework.permissions.IsAuthenticated",
+    },
+}
