@@ -17,10 +17,11 @@ def category_basename():
 
 @freeze_time("1997-05-05")
 def test_create_category(
-    client, get_create_url, category_basename, algorithm_category_name
+    user, client, get_create_url, category_basename, algorithm_category_name
 ):
     url = get_create_url(category_basename)
     data = {"name": algorithm_category_name}
+    client.force_login(user)
     response = client.post(url, data=data, content_type="application/json")
     assert response.status_code == 201
     assert response.data["name"] == algorithm_category_name
@@ -33,6 +34,7 @@ def test_create_category(
     [("Algorithm", "Algorithm"), ("Algorithm", "algorithm")],
 )
 def test_create_existant_category(
+    user,
     client,
     get_create_url,
     category_basename,
@@ -42,6 +44,7 @@ def test_create_existant_category(
     mixer.blend("learning_resources.Category", name=already_created_category_name)
     url = get_create_url(category_basename)
     data = {"name": category_name}
+    client.force_login(user)
     response = client.post(url, data=data, content_type="application/json")
     assert response.status_code == 400
     assert response.data["errors"]["name"] == [
@@ -50,9 +53,10 @@ def test_create_existant_category(
 
 
 @freeze_time("1997-05-05")
-def test_get_all_categories(client, get_list_url, category_basename):
+def test_get_all_categories(user, client, get_list_url, category_basename):
     mixer.cycle(5).blend("learning_resources.Category")
     url = get_list_url(category_basename)
+    client.force_login(user)
     response = client.get(url)
     assert response.status_code == 200
     assert response.data["page_number"] == 1
@@ -60,9 +64,10 @@ def test_get_all_categories(client, get_list_url, category_basename):
     assert len(response.data["categories"]) == 5
 
 
-def test_retrieve_category(client, get_method_url, category_basename):
+def test_retrieve_category(user, client, get_method_url, category_basename):
     category = mixer.blend("learning_resources.Category")
     url = get_method_url(category_basename, str(category.uuid))
+    client.force_login(user)
     response = client.get(url)
     assert response.status_code == 200
     assert response.data["name"] == category.name
