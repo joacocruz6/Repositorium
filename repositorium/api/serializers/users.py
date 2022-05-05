@@ -10,6 +10,9 @@ class UserCreateSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=150)
     last_name = serializers.CharField(max_length=150)
 
+    def validate_email(self, value: str):
+        return value.lower()
+
     def validate_first_name(self, value):
         return conditional_escape(value)
 
@@ -28,3 +31,11 @@ class UserSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=150)
     last_name = serializers.CharField(max_length=150)
     created_at = serializers.DateTimeField()
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+    def validate_email(self, value: str):
+        return value.lower()
