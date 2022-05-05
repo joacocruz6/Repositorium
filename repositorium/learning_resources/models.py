@@ -21,7 +21,8 @@ class System(BaseUUIDModel):
 class LearningObject(BaseUUIDModel):
     title = models.CharField(max_length=150, unique=True)
     categories = models.ManyToManyField(to=Category, related_name="learning_objects")
-    content = models.TextField()
+    description = models.CharField(max_length=450)
+    content = models.TextField(blank=True)
     forked = models.ForeignKey(
         to="learning_resources.LearningObject",
         on_delete=models.DO_NOTHING,
@@ -62,3 +63,13 @@ class LearningObjectUsage(BaseUUIDModel):
         blank=True,
     )
     # Binary rating, I use the object or I don't
+
+
+class LearningObjectFile(BaseUUIDModel):
+    file_route = models.FilePathField()
+    learning_object = models.ForeignKey(
+        to=LearningObject, on_delete=models.CASCADE, related_name="files"
+    )
+
+    def __str__(self):
+        return f"LearningObjectFile at {self.file_route}"
