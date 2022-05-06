@@ -55,3 +55,11 @@ def get_or_create_categories(category_names: List[str]) -> Tuple[List[Category],
         return Category.objects.filter(name__in=category_names), True
     else:
         return already_created_categories, False
+
+
+def get_category_uuids_by_names(category_names: List[str]) -> List[str]:
+    return list(
+        Category.objects.filter(name__in=category_names)
+        .order_by("-created_at")
+        .values_list("uuid", flat=True)
+    )

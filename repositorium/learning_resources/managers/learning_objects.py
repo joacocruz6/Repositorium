@@ -67,3 +67,7 @@ def fork_learning_object(
         creator_email=forked_by.email,
         extra_data=original_learning_object.extra_data,
     )
+
+
+def get_learning_objects_by_category_uuids(categories_uuids: List[str]) -> QuerySet:
+    return LearningObject.objects.filter(categories__uuid__in=categories_uuids)

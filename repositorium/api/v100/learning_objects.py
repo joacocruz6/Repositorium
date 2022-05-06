@@ -122,8 +122,12 @@ class LearningObjectViewSet(
             data = {"errors": serializer.errors}
             return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=["post"], detail=True, url_name="rate_learning_object")
-    def rate(self, request: Request, pk: str = None, *args, **kwargs) -> Response:
+    @action(methods=["post"], detail=True, url_name="quality_learning_object")
+    def quality(self, request: Request, pk: str = None, *args, **kwargs) -> Response:
+        return Response(status=status.HTTP_200_OK)
+
+    @action(methods=["post"], detail=True, url_name="select_learning_object")
+    def select(self, request: Request, pk: str = None, *args, **kwargs) -> Response:
         return Response(status=status.HTTP_200_OK)
 
     @action(methods=["get"], detail=False, url_name="get_my_learning_objects")
