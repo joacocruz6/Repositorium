@@ -21,7 +21,7 @@ class System(BaseUUIDModel):
 class LearningObject(BaseUUIDModel):
     title = models.CharField(max_length=150, unique=True)
     categories = models.ManyToManyField(to=Category, related_name="learning_objects")
-    description = models.CharField(max_length=450)
+    description = models.CharField(max_length=450, blank=True, null=True)
     content = models.TextField(blank=True)
     forked = models.ForeignKey(
         to="learning_resources.LearningObject",
