@@ -9,7 +9,12 @@ from repositorium.learning_resources.exceptions import (
     LearningObjectAlreadyExists,
     LearningObjectDoesNotExists,
 )
-from repositorium.learning_resources.models import Category, LearningObject, System
+from repositorium.learning_resources.models import (
+    Category,
+    LearningObject,
+    LearningObjectUsage,
+    System,
+)
 
 
 def is_learning_object_created(title: str) -> bool:
@@ -71,3 +76,12 @@ def fork_learning_object(
 
 def get_learning_objects_by_category_uuids(categories_uuids: List[str]) -> QuerySet:
     return LearningObject.objects.filter(categories__uuid__in=categories_uuids)
+
+
+def create_learning_object_usage(
+    user: "User", learning_object: LearningObject, system_used: System
+):
+    usage = LearningObjectUsage.objects.create(
+        user=user, learning_object=learning_object, used_on=system_used
+    )
+    return usage
