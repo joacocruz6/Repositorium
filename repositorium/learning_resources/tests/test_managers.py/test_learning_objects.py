@@ -118,3 +118,12 @@ def test_fork_learning_object(learning_object, user):
     assert new_learning_object.created_on == system
     assert new_learning_object.created_on != learning_object.created_on
     assert new_learning_object.extra_data == learning_object.extra_data
+
+
+def test_create_learning_object_usage(learning_object, user):
+    system = mixer.blend("learning_resources.System")
+    usage = learning_objects_manager.create_learning_object_usage(
+        user=user, learning_object=learning_object, system_used=system
+    )
+    user.refresh_from_db()
+    assert user.has_used.filter(uuid=usage.uuid).exists()
