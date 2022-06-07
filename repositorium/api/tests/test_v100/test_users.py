@@ -9,9 +9,14 @@ def user_basename():
     yield "user"
 
 
+@pytest.fixture
+def create_url_name():
+    yield "create"
+
+
 @freeze_time("1997-05-05")
-def test_create_user_view(client, get_create_url, user_basename):
-    url = get_create_url(user_basename)
+def test_create_user_view(client, get_extra_url, create_url_name, user_basename):
+    url = get_extra_url(user_basename, create_url_name)
     email = "joaquin@cruz.com"
     first_name = "Joaquin"
     last_name = "Cruz"
@@ -33,8 +38,10 @@ def test_create_user_view(client, get_create_url, user_basename):
     assert response.data == expected_data
 
 
-def test_already_created_user(user, client, get_create_url, user_basename):
-    url = get_create_url(user_basename)
+def test_already_created_user(
+    user, client, get_extra_url, create_url_name, user_basename
+):
+    url = get_extra_url(user_basename, create_url_name)
     data = {
         "email": user.email,
         "password": "some_password",

@@ -35,5 +35,5 @@ class LearningObjectForkSerializer(serializers.Serializer):
     system_uuid = serializers.UUIDField()
 
 
-class LearningObjectRateSerializer(serializers.Serializer):
-    rating = serializers.DecimalField(max_digits=3, decimal_places=2)
+class LearningObjectUsageSerializer(BaseSerializer):
+    pass
