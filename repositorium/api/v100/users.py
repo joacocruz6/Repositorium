@@ -17,7 +17,11 @@ from repositorium.users import managers as user_manager
 
 class UserViewSet(ViewSet):
     @action(
-        methods=["post"], detail=False, url_name="create", permission_classes=[AllowAny]
+        methods=["post"],
+        detail=False,
+        url_path="create",
+        url_name="create",
+        permission_classes=[AllowAny],
     )
     def create_user(self, request: Request, *args, **kwargs) -> Response:
         serializer = UserCreateSerializer(data=request.data)
@@ -38,7 +42,7 @@ class UserViewSet(ViewSet):
             )
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=["get"], detail=False, url_name="session")
+    @action(methods=["get"], detail=False, url_path="current", url_name="session")
     def current_user(self, request: Request, *args, **kwargs):
         serializer = UserSerializer(instance=request.user)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
@@ -47,7 +51,7 @@ class UserViewSet(ViewSet):
     def change_password(self, request: Request, *args, **kwargs):
         return Response(status=status.HTTP_200_OK)
 
-    @action(methods=["put"], detail=False, url_name="update_user")
+    @action(methods=["put"], detail=False, url_path="update", url_name="update_user")
     def update_user(self, request: Request, *args, **kwargs):
         return Response(status=status.HTTP_200_OK)
 
