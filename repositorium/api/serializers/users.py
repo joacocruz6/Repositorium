@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from django.utils.html import conditional_escape
 from rest_framework import serializers
 
@@ -39,3 +41,19 @@ class LoginSerializer(serializers.Serializer):
 
     def validate_email(self, value: str):
         return value.lower()
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(max_length=150)
+    new_password = serializers.CharField(max_length=150, min_length=8)
+    confirm_new_password = serializers.CharField(max_length=150)
+
+    def validate(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        if data["new_password"] != data["confirm_new_password"]:
+            raise serializers.ValidationError("New password confirmation didn't match")
+        return data
+
+
+class UpdateUserSerializer(serializers.Serializer):
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)

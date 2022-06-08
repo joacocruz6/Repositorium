@@ -7,7 +7,9 @@
       - [**Authentication**](#authentication)
       - [**Systems**](#systems)
       - [**Categories**](#categories)
-    - [Getting Started](#getting-started)
+      - [**Learning Objects**](#learning-objects)
+      - [**Recomendation System**](#recomendation-system)
+    - [**Getting Started**](#getting-started)
 
 ### API
 Repositorium have a lot of API's, you can see the [gettings started section](#getting_started) to start using it. All the resources availables are listed below:
@@ -185,4 +187,18 @@ All of the important operations need the `uuid` of the system. You could retriev
 - **`GET /api/v100/system/<system_uuid>`**: Get the information of a specific system, the response is exactly the same as the creation one but it returns a `200 OK` instead of a `201 CREATED` status.
 
 #### **Categories**
-### Getting Started
+
+Categories, also known as *tags* , is a short one liner description of a *learning object* that enhance the definition and description of it.
+
+
+#### **Learning Objects**
+
+A learning object is a atomic piece of collaboration that a user submit into the system. With these data, you should give your users the power of collaboration between them. The recommendation systems are completely tied
+with this data.
+
+
+#### **Recomendation System**
+
+(TODO: Create the API documentation for this)
+
+### **Getting Started**

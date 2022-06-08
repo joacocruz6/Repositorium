@@ -8,11 +8,18 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from repositorium.api.serializers.users import (
+    ChangePasswordSerializer,
     LoginSerializer,
+    UpdateUserSerializer,
     UserCreateSerializer,
     UserSerializer,
 )
 from repositorium.users import managers as user_manager
+from repositorium.users.exceptions import (
+    ChangePasswordException,
+    MultipleUsersReturned,
+    UserDoesNotExists,
+)
 
 
 class UserViewSet(ViewSet):
@@ -49,11 +56,39 @@ class UserViewSet(ViewSet):
 
     @action(methods=["put"], detail=False, url_name="change_password")
     def change_password(self, request: Request, *args, **kwargs):
+        serializer = ChangePasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            current_password = serializer.data["current_password"]
+            new_password = serializer.data["new_password"]
+            try:
+                user_manager.change_user_password(
+                    user=request.user,
+                    current_password=current_password,
+                    new_password=new_password,
+                )
+            except ChangePasswordException:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
 
     @action(methods=["put"], detail=False, url_path="update", url_name="update_user")
     def update_user(self, request: Request, *args, **kwargs):
-        return Response(status=status.HTTP_200_OK)
+        serializer = UpdateUserSerializer(data=request.user)
+        if serializer.is_valid():
+            first_name = serializer.get("first_name", request.user.first_name)
+            last_name = serializer.get("last_name", request.user.last_name)
+            try:
+                user_manager.update_user(
+                    user_email=request.user.email,
+                    first_name=first_name,
+                    last_name=last_name,
+                )
+                request.user.refresh_from_db()
+                serialized_user = UserSerializer(instance=request.user)
+                return Response(status=status.HTTP_200_OK, data=serialized_user.data)
+            except (UserDoesNotExists, MultipleUsersReturned):
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class AuthViewSet(ViewSet):
