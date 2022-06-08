@@ -28,7 +28,9 @@ class SystemViewSet(
         return system_manager.create_system(name=name, creator_email=creator_email)
 
     def get_objects(self, *args, **kwargs):
-        return system_manager.get_all_systems()
+        return system_manager.get_user_created_systems(
+            user_email=self.request.user.email
+        )
 
     def get_object(self, pk: str, *args, **kwargs):
         return system_manager.get_system_by_uuid(uuid=pk)

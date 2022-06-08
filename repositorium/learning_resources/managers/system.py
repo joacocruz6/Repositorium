@@ -40,3 +40,7 @@ def get_or_create_system(name: str) -> Tuple[System, bool]:
 
 def get_all_systems() -> QuerySet:
     return System.objects.all()
+
+
+def get_user_created_systems(user_email: str) -> QuerySet:
+    return System.objects.filter(creator_email=user_email)
