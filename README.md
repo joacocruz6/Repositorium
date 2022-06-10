@@ -182,19 +182,84 @@ All of the important operations need the `uuid` of the system. You could retriev
     }
     ```
 
-- **`GET /api/v100/system/`**: Get all the systems created on repositorium. This has some paginations included.
+- **`GET /api/v100/system/`**: Get the systems you have created on repositorium. This has some paginations included, and you can include `per_page` and `page_number` with the get request in order to change how many created entities you want per page and what page number you want.
+
+    The expected response should be:
+    ```js
+    Status: 200 OK
+    {
+        "systems": [{"uuid": "1214a0fb-0d73-4a0b-93be-5690e8acbb0e","created_at": "1997-05-05T00:00:00Z","name": "Easy-Study"},]
+        "page_number": 1,
+        "has_next_page": false,
+    }
+    ```
 
 - **`GET /api/v100/system/<system_uuid>`**: Get the information of a specific system, the response is exactly the same as the creation one but it returns a `200 OK` instead of a `201 CREATED` status.
+
+    The expected response looks like:
+    ```js
+    Status: 200 OK
+    {
+        "uuid": "1214a0fb-0d73-4a0b-93be-5690e8acbb0e",
+        "created_at": "1997-05-05T00:00:00Z",
+        "name": "Easy-Study"
+    }
+    ```
 
 #### **Categories**
 
 Categories, also known as *tags* , is a short one liner description of a *learning object* that enhance the definition and description of it.
 
+**Auth Required**
+
+All the endpoints of this resource will need authorization tokens to access them.
+
+- **`POST /api/v100/category/`**: Creates a category on the database.
+
+    The expected body will be:
+    ```js
+        {
+            "name": "Category Awesome Name",
+        }
+    ```
+    The expected result is:
+    ```js
+        Status: 201 CREATED
+        {
+            "uuid": "5cd36a1c-6ebc-451e-8c01-86e25d891131",
+            "created_at": "1997-05-05T00:00:00Z"
+            "name": "Category Awesome Name",
+        }
+    ```
+- **`GET /api/v100/category/`**: Get a list of all the categories with pagination. It can have `page_number` and `per_page` attributes through the URL.
+
+    A response example should be:
+    ```js
+        {
+            "categories": [{"uuid": "5cd36a1c-6ebc-451e-8c01-86e25d891131","created_at": "1997-05-05T00:00:00Z","name": "Category Awesome Name"},]
+            "page_number": 1,
+            "has_next_page": false,
+        }
+    ```
+
+- **`GET /api/v100/category/<category_uuid>`**: Retrieve the data of a specific category.
+
+    A response example should be:
+    ```js
+        Status: 200 OK
+        {
+            "uuid": "5cd36a1c-6ebc-451e-8c01-86e25d891131",
+            "created_at": "1997-05-05T00:00:00Z"
+            "name": "Category Awesome Name",
+        }
+    ```
 
 #### **Learning Objects**
 
 A learning object is a atomic piece of collaboration that a user submit into the system. With these data, you should give your users the power of collaboration between them. The recommendation systems are completely tied
 with this data.
+
+This API is divided in two, one for the learning objects as an entity and another for the file management of a given learning object (if applicable).
 
 
 #### **Recomendation System**
