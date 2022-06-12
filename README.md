@@ -8,6 +8,7 @@
       - [**Systems**](#systems)
       - [**Categories**](#categories)
       - [**Learning Objects**](#learning-objects)
+      - [**Learning Objects Files**](#learning-objects-files)
       - [**Recomendation System**](#recomendation-system)
     - [**Getting Started**](#getting-started)
 
@@ -273,7 +274,9 @@ This API is divided in two, one for the learning objects as an entity and anothe
 - **`POST /api/v100/learning_object/<object_uuid>/select/`**: Mark a selection from the user to a learning object. This data is collected in order to use it on the recomender systems.
 - **`GET /api/v100/learning_objects/my_learning_objects/`**: Obtain all the learning objects created or forked by the current user.
 
-- **`GET /api/v100/learning_objects/files/<file_uuid>`**: Get the specified learning object file. This are returned as a BLOB, in order to be handled on the client which are requested.
+#### **Learning Objects Files**
+The files of a learning object will be managed on this subsets of endpoints. All require that a learning object is created previously and they can be uploaded in any time on the future.
+
 
 
 #### **Recomendation System**
