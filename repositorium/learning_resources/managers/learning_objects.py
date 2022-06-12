@@ -61,13 +61,17 @@ def get_learning_object_by_title(title: str) -> LearningObject:
 
 
 def fork_learning_object(
-    original_learning_object: LearningObject, forked_by: "User", forked_on: System
+    original_learning_object: LearningObject,
+    forked_by: "User",
+    forked_on: System,
+    title: str,
+    content: str,
+    categories: List[Category],
 ) -> LearningObject:
-    title = f"Fork of {original_learning_object.title} by {forked_by.full_name} at {arrow.now().datetime}"
     return create_learning_object(
         title=title,
-        content=original_learning_object.content,
-        categories=list(original_learning_object.categories.all()),
+        content=content,
+        categories=categories,
         created_on=forked_on,
         creator_email=forked_by.email,
         extra_data=original_learning_object.extra_data,

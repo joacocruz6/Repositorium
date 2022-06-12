@@ -110,7 +110,12 @@ def test_fork_learning_object(learning_object, user):
         f"Fork of {learning_object.title} by {user.full_name} at {arrow.now().datetime}"
     )
     new_learning_object = learning_objects_manager.fork_learning_object(
-        learning_object, user, system
+        learning_object,
+        user,
+        system,
+        title=expected_name,
+        content=learning_object.content,
+        categories=list(learning_object.categories.all()),
     )
     assert new_learning_object.title == expected_name
     assert new_learning_object.content == learning_object.content

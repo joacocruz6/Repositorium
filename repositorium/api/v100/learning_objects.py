@@ -1,5 +1,6 @@
-from typing import Dict
+from typing import Dict, List, Tuple
 
+import arrow
 from django.core.paginator import EmptyPage, Paginator
 from django.db.models import Model, QuerySet
 from rest_framework import status
@@ -44,6 +45,11 @@ class LearningObjectViewSet(
     }
     resource_plural_name = "learning_objects"
 
+    def get_or_create_learning_object_categories(
+        self, category_names: List[str]
+    ) -> Tuple[List, bool]:
+        return category_manager.get_or_create_categories(category_names=category_names)
+
     def get_object(self, pk: str, *args, **kwargs) -> Model:
         return learning_objects_manager.get_learning_object_by_uuid(uuid=pk)
 
@@ -59,7 +65,7 @@ class LearningObjectViewSet(
         creator_email = self.request.user.email
 
         system = system_manager.get_system_by_uuid(uuid=system_uuid)
-        categories, _ = category_manager.get_or_create_categories(
+        categories, _ = self.get_or_create_learning_object_categories(
             category_names=category_names
         )
         learning_object = learning_object_manager.create_learning_object(
@@ -86,18 +92,43 @@ class LearningObjectViewSet(
     @action(methods=["post"], detail=True, url_name="fork_learning_object")
     def fork(self, request: Request, pk: str = None, *args, **kwargs) -> Response:
         serializer = LearningObjectForkSerializer(data=request.data)
+        try:
+            original_learning_object = (
+                learning_object_manager.get_learning_object_by_uuid(uuid=pk)
+            )
+            original_learning_object_category_names = list(
+                original_learning_object.categories.all().values_list("name", flat=True)
+            )
+        except LearningObjectDoesNotExists:
+            data = {
+                "errors": {
+                    "learning_object": [
+                        "Learning object with that uuid does not exist."
+                    ]
+                },
+            }
+            return Response(data=data, status=status.HTTP_404_NOT_FOUND)
         if serializer.is_valid():
             system_uuid = serializer.data["system_uuid"]
+            default_title = f"Fork of {original_learning_object.title} by {request.user.full_name} at {arrow.now().datetime}"
+            title = serializer.data.get("title", default_title)
+            content = serializer.data.get("content", original_learning_object.content)
+            category_names = serializer.data.get(
+                "categories", original_learning_object_category_names
+            )
             try:
                 system = system_manager.get_system_by_uuid(uuid=system_uuid)
                 forked_by = request.user
-                original_learning_object = (
-                    learning_object_manager.get_learning_object_by_uuid(uuid=pk)
+                categories, _ = self.get_or_create_learning_object_categories(
+                    category_names=category_names
                 )
                 learning_object = learning_object_manager.fork_learning_object(
                     original_learning_object=original_learning_object,
                     forked_by=forked_by,
                     forked_on=system,
+                    title=title,
+                    content=content,
+                    categories=categories,
                 )
                 learning_object_serializer = self.get_serializer_class()(
                     instance=learning_object
@@ -108,15 +139,6 @@ class LearningObjectViewSet(
             except SystemDoesNotExists:
                 data = {
                     "errors": {"system_uuid": ["System with that uuid does not exist."]}
-                }
-                return Response(data=data, status=status.HTTP_404_NOT_FOUND)
-            except LearningObjectDoesNotExists:
-                data = {
-                    "errors": {
-                        "learning_object": [
-                            "Learning object with that uuid does not exist."
-                        ]
-                    },
                 }
                 return Response(data=data, status=status.HTTP_404_NOT_FOUND)
         else:
