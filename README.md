@@ -259,7 +259,21 @@ All the endpoints of this resource will need authorization tokens to access them
 A learning object is a atomic piece of collaboration that a user submit into the system. With these data, you should give your users the power of collaboration between them. The recommendation systems are completely tied
 with this data.
 
-This API is divided in two, one for the learning objects as an entity and another for the file management of a given learning object (if applicable).
+This API is divided in two, one for the learning objects as an entity and another for the file management of a given learning object (if applicable). (Maybe is just one part, I have to think how to upload the files).
+
+**Auth Required:**
+
+- **`POST /api/v100/learning_object/`**: Creates a learning object on the database. The
+
+- **`GET /api/v100/learning_object/`**: Get a paginated response of all the learning objects in the system. This does not include the learning object files, that is on a different endpoint (if it has files).
+- **`GET /api/v100/learning_object/<object_uuid>`**: Get the detailed information of a particular learning object. This does not include the files, which are handled in a different endpoint.
+- **`POST /api/v100/learning_object/<object_uuid>/fork/`**: Creates a copy of the learning object on the database.
+
+- **`POST /api/v100/learning_object/<object_uuid>/quality/`** (WIP) creates a quality control on the learning object of the specified UUID.
+- **`POST /api/v100/learning_object/<object_uuid>/select/`**: Mark a selection from the user to a learning object. This data is collected in order to use it on the recomender systems.
+- **`GET /api/v100/learning_objects/my_learning_objects/`**: Obtain all the learning objects created or forked by the current user.
+
+- **`GET /api/v100/learning_objects/files/<file_uuid>`**: Get the specified learning object file. This are returned as a BLOB, in order to be handled on the client which are requested.
 
 
 #### **Recomendation System**
