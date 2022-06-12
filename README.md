@@ -250,7 +250,7 @@ All the endpoints of this resource will need authorization tokens to access them
         Status: 200 OK
         {
             "uuid": "5cd36a1c-6ebc-451e-8c01-86e25d891131",
-            "created_at": "1997-05-05T00:00:00Z"
+            "created_at": "1997-05-05T00:00:00Z",
             "name": "Category Awesome Name",
         }
     ```
@@ -264,15 +264,121 @@ This API is divided in two, one for the learning objects as an entity and anothe
 
 **Auth Required:**
 
-- **`POST /api/v100/learning_object/`**: Creates a learning object on the database. The
+- **`POST /api/v100/learning_object/`**: Creates a learning object on the database. The files are handled in other endpoint.
 
-- **`GET /api/v100/learning_object/`**: Get a paginated response of all the learning objects in the system. This does not include the learning object files, that is on a different endpoint (if it has files).
+    A request should look like:
+
+    ```js
+        {
+            "title": "An awesome exercise",
+            "content": "Some content" // This can be blank
+            "categories": ["Category Awesome Name", "Exercise"] // If there aren't created, it will be created
+            "system_uuid": "1214a0fb-0d73-4a0b-93be-5690e8acbb0e",
+        }
+    ```
+
+    An expected response should look like:
+
+    ```js
+        Status: 201 CREATED
+        {
+            "uuid": "be7673f9-39c1-4b04-ab40-b670521ece47",
+            "created_at": "1997-05-05T00:00:00Z"
+            "title": "An awesome exercise",
+            "content": "Some content",
+            "categories": [{"uuid":"5cd36a1c-6ebc-451e-8c01-86e25d891131","created_at": "1997-05-05T00:00:00Z", "name": "Category Awesome Name"},{"uuid": "4cb5771c-be8a-4fe4-b3e5-7115d8828dff", "created_at":"1997-05-05T00:00:00Z", "name": "Exercise"}],
+            "extra_data": {},
+            "creator_email": "some_email@example.com",
+            "is_forked": false,
+            "system": "Easy-Study",
+        }
+    ```
+- **`GET /api/v100/learning_object/`**: Get a paginated response of all the learning objects in the system. This does not include the learning object files, that is on a different endpoint (if it has files). As previous ones, this could have `per_page` and `page_number` url parameters.
+
+    An example of response should look like:
+    ```js
+        Status: 200 OK
+        {
+            "learning_objects": [{
+                "uuid": "be7673f9-39c1-4b04-ab40-b670521ece47",
+                "created_at": "1997-05-05T00:00:00Z"
+                "title": "An awesome exercise",
+                "content": "Some content",
+                "categories": [{"uuid":"5cd36a1c-6ebc-451e-8c01-86e25d891131","created_at": "1997-05-05T00:00:00Z", "name": "Category Awesome Name"},{"uuid": "4cb5771c-be8a-4fe4-b3e5-7115d8828dff", "created_at":"1997-05-05T00:00:00Z", "name": "Exercise"}],
+                "extra_data": {},
+                "creator_email": "some_email@example.com",
+                "is_forked": false,
+                "system": "Easy-Study",
+            }],
+            "page_number": 1,
+            "has_next_page": false,
+    ```
+
+
 - **`GET /api/v100/learning_object/<object_uuid>`**: Get the detailed information of a particular learning object. This does not include the files, which are handled in a different endpoint.
-- **`POST /api/v100/learning_object/<object_uuid>/fork/`**: Creates a copy of the learning object on the database.
 
-- **`POST /api/v100/learning_object/<object_uuid>/quality/`** (WIP) creates a quality control on the learning object of the specified UUID.
+    An example of response should look like:
+    ```js
+        Status: 200 OK
+        {
+            "uuid": "be7673f9-39c1-4b04-ab40-b670521ece47",
+            "created_at": "1997-05-05T00:00:00Z"
+            "title": "An awesome exercise",
+            "content": "Some content",
+            "categories": [{"uuid":"5cd36a1c-6ebc-451e-8c01-86e25d891131","created_at": "1997-05-05T00:00:00Z", "name": "Category Awesome Name"},{"uuid": "4cb5771c-be8a-4fe4-b3e5-7115d8828dff", "created_at":"1997-05-05T00:00:00Z", "name": "Exercise"}],
+            "extra_data": {},
+            "creator_email": "some_email@example.com",
+            "is_forked": false,
+            "system": "Easy-Study",
+        }
+    ```
+
+- **`POST /api/v100/learning_object/<object_uuid>/fork/`**: Creates a copy of the learning object on the database. Some property can be overwritten with the parameters given. This does not copy the files of the previous one, so please copy them manually (for now). The only **required** parameter is **system_uuid**, all the other ones are only if you want to overwrite them.
+
+    A request should looks like:
+    ```js
+        {
+            "system_uuid": "1214a0fb-0d73-4a0b-93be-5690e8acbb0e",
+            "title": "Copy of a new exercise", //optional
+            "categories": ["New category"], // optional
+            "content": "other content", // optional
+        }
+    ```
+    The response should looks like:
+
+    ```js
+        Status: 201 CREATED
+        {
+            "uuid": "b474a152-2ed1-4d25-a26f-0227a4f68315",
+            "created_at": "1997-05-05T00:00:00Z"
+            "title": "Copy of a new exercise",
+            "content": "other content",
+            "categories": [{"uuid":"9bb4e320-0dc3-489c-a07e-4d4a618d2554","created_at": "1997-05-05T00:00:00Z", "name": "New category"}],
+            "extra_data": {},
+            "creator_email": "some_email@example.com",
+            "is_forked": true,
+            "system": "Easy-Study",
+        }
+    ```
+
+- **`POST /api/v100/learning_object/<object_uuid>/quality/`** (WIP) creates a quality control on the learning object of the specified UUID. *This is currently in progress, so always returns 200*
+-
 - **`POST /api/v100/learning_object/<object_uuid>/select/`**: Mark a selection from the user to a learning object. This data is collected in order to use it on the recomender systems.
-- **`GET /api/v100/learning_objects/my_learning_objects/`**: Obtain all the learning objects created or forked by the current user.
+
+    This hasn't a request body and the response looks like:
+    ```js
+        Status: 201 CREATED
+        {
+            "uuid": "5446e4e4-bff1-456e-8c64-9591b95adab9",
+            "created_on": "1997-05-05T00:00:00Z",
+        }
+    ```
+
+
+- **`GET /api/v100/learning_objects/my_learning_objects/`**: Obtain all the learning objects created or forked by the current user. The response is the same as the `GET /api/v100/learning_objects/` but with a filter.
+
+
+
 
 #### **Learning Objects Files**
 The files of a learning object will be managed on this subsets of endpoints. All require that a learning object is created previously and they can be uploaded in any time on the future.
@@ -280,7 +386,28 @@ The files of a learning object will be managed on this subsets of endpoints. All
 
 
 #### **Recomendation System**
+This will change (with different versions) when they are being developed.
 
-(TODO: Create the API documentation for this)
+The only endpoint is with **Auth Required**:
+
+- **`GET /api/v100/recomend/`**: The expected response of this endpoint is:
+
+  ```js
+   Status: 200 OK
+    {
+        "learning_objects": [{
+            "uuid": "be7673f9-39c1-4b04-ab40-b670521ece47",
+            "created_at": "1997-05-05T00:00:00Z"
+            "title": "An awesome exercise",
+            "content": "Some content",
+            "categories": [{"uuid":"5cd36a1c-6ebc-451e-8c01-86e25d891131","created_at": "1997-05-05T00:00:00Z", "name": "Category Awesome Name"},{"uuid": "4cb5771c-be8a-4fe4-b3e5-7115d8828dff", "created_at":"1997-05-05T00:00:00Z", "name": "Exercise"}],
+            "extra_data": {},
+            "creator_email": "some_email@example.com",
+            "is_forked": false,
+            "system": "Easy-Study",
+        }],
+        "page_number": 1,
+        "has_next_page": false,
+  ```
 
 ### **Getting Started**
