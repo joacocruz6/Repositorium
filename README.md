@@ -411,3 +411,41 @@ The only endpoint is with **Auth Required**:
   ```
 
 ### **Getting Started**
+
+In order to explain how to set up and use the API, we will do it with a *mini-tutorial* with a real life example.
+
+First things first, Assume that the url on which repositorium will be is at `https://repositorium.buho.cl` , it's going to change into the real one but is just to explain the concepts. And the examples will be using `curl` as interface.
+
+Our first objective is to create a *system* entry on the database in order to start uploading learning objects associated with it.
+
+In order to create a *system* we will need an account. To do this, on curl let's use the **`/api/v100/user/create/`** endpoint:
+
+
+```bash
+$ curl -d '{"email":"example@gmail.com", "first_name":"example", "last_name":"great", "password":"some_password"}'-H "Content-Type: application/json" -X POST https://repositorium.buho.cl/api/v100/user/create/
+```
+
+If this is successful, then it will return a `201` code `CREATED` response and in the body will appear the details about the created user.
+
+Then we need an authentication token. To do this, let's log-in:
+
+```bash
+$ curl -d '{"email":"example@gmail.com", "password":"some_password"}' -H "Content-Type: application/json" -X POST https://repositorium.buho.cl/api/v100/auth/login/
+```
+
+In the data of the response, I will assume that the value under the key `"auth_token"` will be `"3c469e9d6c5875d37"`
+which is the authentication key in order to make requests to the endpoints.
+
+
+So now to create the *system* called *Awesome System 68* we do a post request with just the name of it.
+
+```bash
+$ curl -d '{"name":"Awesome System 68"}' -H "Content-Type: application/json" -H "Authorization: Token 3c469e9d6c5875d37" -X POST https://repositorium.buho.cl/api/v100/system/
+```
+
+On the response of this request, it will bring the `uuid` of it.
+
+ **Important!** Please, keep that uuid in order to make the other requests, you can retrieve it by the api but it will be a lot of unnecesary requests to do.
+
+
+Now you are setted up to do the API calls with a new system on the database.
