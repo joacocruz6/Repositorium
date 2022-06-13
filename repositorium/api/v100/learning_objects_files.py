@@ -7,7 +7,6 @@ from rest_framework.views import APIView
 
 
 class FileManagementAPIView(APIView):
-
     @parser_classes([FileUploadParser])
     def post(self, request: Request, uuid: str, *args, **kwargs) -> Response:
         pass
