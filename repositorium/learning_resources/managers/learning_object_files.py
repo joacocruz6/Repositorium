@@ -9,6 +9,6 @@ def upload_learning_object_file():
 
 
 def get_learning_object_file(
-    file_uuid: Union[str, UUID], learning_object_uuid: str
+    file_uuid: Union[str, UUID],
 ) -> str:
     pass
