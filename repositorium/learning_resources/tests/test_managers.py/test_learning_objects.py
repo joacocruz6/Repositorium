@@ -34,12 +34,14 @@ def categories():
 def learning_object(user, system, categories):
     name = "Acelerador de protones"
     content = "Profesor cerebron, yo he trabajado mas de 50 años en una planta nuclear y creo que se como funciona un acelerador de protones"
+    description = "Quote de Homero"
     learning_object = mixer.blend(
         "learning_resources.LearningObject",
         name=name,
         content=content,
         created_on=system,
         creator_email=user.email,
+        description=description,
     )
     learning_object.categories.add(*categories)
     yield learning_object
@@ -49,9 +51,11 @@ def test_create_learning_object(user, system, categories):
     extra_data = {"a": 3}
     content = "This is the content of the learning object"
     title = "Test object"
+    description = "Short Description"
     learning_object = learning_objects_manager.create_learning_object(
         title=title,
         content=content,
+        description=description,
         categories=categories,
         created_on=system,
         creator_email=user.email,
@@ -66,6 +70,7 @@ def test_already_name_taken_learning_object(user, system, categories):
     title = "Test"
     mixer.blend("learning_resources.LearningObject", title=title)
     content = "Some content"
+    description = "Some Description"
     with pytest.raises(LearningObjectAlreadyExists):
         learning_objects_manager.create_learning_object(
             title=title,
@@ -73,6 +78,7 @@ def test_already_name_taken_learning_object(user, system, categories):
             categories=categories,
             created_on=system,
             creator_email=user.email,
+            description=description,
         )
 
 
@@ -113,6 +119,7 @@ def test_fork_learning_object(learning_object, user):
         learning_object,
         user,
         system,
+        description=learning_object.description,
         title=expected_name,
         content=learning_object.content,
         categories=list(learning_object.categories.all()),

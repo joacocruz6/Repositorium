@@ -58,6 +58,7 @@ class LearningObjectViewSet(
 
     def create_object(self, serializer_data: Dict, *args, **kwargs) -> LearningObject:
         title = serializer_data["title"]
+        description = serializer_data["description"]
         content = serializer_data["content"]
         category_names = serializer_data["categories"]
         system_uuid = serializer_data["system_uuid"]
@@ -71,6 +72,7 @@ class LearningObjectViewSet(
         learning_object = learning_object_manager.create_learning_object(
             title=title,
             content=content,
+            description=description,
             categories=categories,
             created_on=system,
             creator_email=creator_email,
@@ -113,6 +115,9 @@ class LearningObjectViewSet(
             default_title = f"Fork of {original_learning_object.title} by {request.user.full_name} at {arrow.now().datetime}"
             title = serializer.data.get("title", default_title)
             content = serializer.data.get("content", original_learning_object.content)
+            description = serializer.data.get(
+                "description", original_learning_object.description
+            )
             category_names = serializer.data.get(
                 "categories", original_learning_object_category_names
             )
@@ -129,6 +134,7 @@ class LearningObjectViewSet(
                     title=title,
                     content=content,
                     categories=categories,
+                    description=description,
                 )
                 learning_object_serializer = self.get_serializer_class()(
                     instance=learning_object

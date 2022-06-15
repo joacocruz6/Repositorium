@@ -21,6 +21,7 @@ def test_create_learning_object_view(
         "content": "Somebody once told me, the world is gonna roll me.",
         "categories": [category.name],
         "system_uuid": str(system.uuid),
+        "description": "Song of Shrek",
         "extra_data": {
             "renders": "latex",
         },
@@ -50,6 +51,7 @@ def test_not_existant_system_create_learning_object(
     data = {
         "title": "Shrek",
         "content": "Shrek is love, Shrek is life.",
+        "description": "Video of shrek",
         "categories": [category.name],
         "system_uuid": str(uuid.uuid4()),
         "extra_data": {},
@@ -66,6 +68,7 @@ def test_non_existant_category_create_learning_object(
     data = {
         "title": "Shrek is ...",
         "content": "Love or Life?",
+        "description": "One Shrek",
         "categories": ["Hello there"],
         "system_uuid": str(system.uuid),
         "extra_data": {},

@@ -25,6 +25,7 @@ def create_learning_object(
     title: str,
     content: Text,
     categories: List[Category],
+    description: str,
     created_on: System,
     creator_email: str,
     extra_data: Optional[Dict] = None,
@@ -66,6 +67,7 @@ def fork_learning_object(
     forked_on: System,
     title: str,
     content: str,
+    description: str,
     categories: List[Category],
 ) -> LearningObject:
     return create_learning_object(
@@ -74,6 +76,7 @@ def fork_learning_object(
         categories=categories,
         created_on=forked_on,
         creator_email=forked_by.email,
+        description=description,
         extra_data=original_learning_object.extra_data,
     )
 
