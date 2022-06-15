@@ -272,6 +272,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
         {
             "title": "An awesome exercise",
             "content": "Some content" // This can be blank
+            "description": "A short description",
             "categories": ["Category Awesome Name", "Exercise"] // If there aren't created, it will be created
             "system_uuid": "1214a0fb-0d73-4a0b-93be-5690e8acbb0e",
         }
@@ -286,6 +287,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
             "created_at": "1997-05-05T00:00:00Z"
             "title": "An awesome exercise",
             "content": "Some content",
+            "description": "A short description",
             "categories": [{"uuid":"5cd36a1c-6ebc-451e-8c01-86e25d891131","created_at": "1997-05-05T00:00:00Z", "name": "Category Awesome Name"},{"uuid": "4cb5771c-be8a-4fe4-b3e5-7115d8828dff", "created_at":"1997-05-05T00:00:00Z", "name": "Exercise"}],
             "extra_data": {},
             "creator_email": "some_email@example.com",
@@ -304,6 +306,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
                 "created_at": "1997-05-05T00:00:00Z"
                 "title": "An awesome exercise",
                 "content": "Some content",
+                "description": "A short description",
                 "categories": [{"uuid":"5cd36a1c-6ebc-451e-8c01-86e25d891131","created_at": "1997-05-05T00:00:00Z", "name": "Category Awesome Name"},{"uuid": "4cb5771c-be8a-4fe4-b3e5-7115d8828dff", "created_at":"1997-05-05T00:00:00Z", "name": "Exercise"}],
                 "extra_data": {},
                 "creator_email": "some_email@example.com",
@@ -325,6 +328,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
             "created_at": "1997-05-05T00:00:00Z"
             "title": "An awesome exercise",
             "content": "Some content",
+            "description": "A short description",
             "categories": [{"uuid":"5cd36a1c-6ebc-451e-8c01-86e25d891131","created_at": "1997-05-05T00:00:00Z", "name": "Category Awesome Name"},{"uuid": "4cb5771c-be8a-4fe4-b3e5-7115d8828dff", "created_at":"1997-05-05T00:00:00Z", "name": "Exercise"}],
             "extra_data": {},
             "creator_email": "some_email@example.com",
@@ -342,6 +346,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
             "title": "Copy of a new exercise", //optional
             "categories": ["New category"], // optional
             "content": "other content", // optional
+            "description": "other description", // optional
         }
     ```
     The response should looks like:
@@ -353,6 +358,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
             "created_at": "1997-05-05T00:00:00Z"
             "title": "Copy of a new exercise",
             "content": "other content",
+            "description": "A short description",
             "categories": [{"uuid":"9bb4e320-0dc3-489c-a07e-4d4a618d2554","created_at": "1997-05-05T00:00:00Z", "name": "New category"}],
             "extra_data": {},
             "creator_email": "some_email@example.com",
