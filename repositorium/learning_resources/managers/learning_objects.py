@@ -35,6 +35,7 @@ def create_learning_object(
     learning_object = LearningObject.objects.create(
         title=title,
         content=content,
+        description=description,
         created_on=created_on,
         creator_email=creator_email,
         extra_data=extra_data,
