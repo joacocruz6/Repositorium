@@ -8,3 +8,7 @@ class ChangePasswordException(Exception):
 
 class MultipleUsersReturned(Exception):
     pass
+
+
+class UserAlreadyExists(Exception):
+    pass
