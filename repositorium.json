@@ -1,0 +1,1793 @@
+{
+  "uuid": "78a648c9-8ddb-4991-a8a4-e90a792a2100",
+  "lastMigration": 20,
+  "name": "Repositorium",
+  "endpointPrefix": "api/v100/",
+  "latency": 20,
+  "port": 3800,
+  "hostname": "127.0.0.1",
+  "routes": [
+    {
+      "uuid": "0f65ac71-5d0e-498b-9a5f-76ce60415659",
+      "documentation": "This endpoints simulates the login action of an endpoint.",
+      "method": "post",
+      "endpoint": "auth/login/",
+      "responses": [
+        {
+          "uuid": "81a7531c-bac8-4550-95b2-cee10355cdab",
+          "body": "{\n  \"auth_token\": \"{{oneOf (array '2332a9a7a3c8828082b3784c0' '1dfde6197c36da8dd3506810c' '9e8b9347c5b0d9cfab5183fe7' '8ae2cace90c18a922d0704813')}}\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Give a token to the user",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "a38b861e-1049-4f89-9239-7e50e28a57c3",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "09ab1302-5aa8-4351-8a37-674c05ed8cf9",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "1ccea4f2-e265-442e-b228-7f4c6513e5fa",
+      "documentation": "This endpoint simulate a logout in the system",
+      "method": "post",
+      "endpoint": "auth/logout/",
+      "responses": [
+        {
+          "uuid": "738fe37b-e19f-4944-b7de-3ea83c81f87a",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Logout the user",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "7b29dd01-40e0-4d59-80b4-40d253d146f9",
+          "body": "{}",
+          "latency": 20,
+          "statusCode": 401,
+          "label": "No active session",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "203b07e0-0acb-45cb-9950-e8d84ce34dfb",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "Internal Server Error",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "bf60daa3-5423-4f95-9b2a-111658902784",
+      "documentation": "Endpoint to create a user",
+      "method": "post",
+      "endpoint": "user/create/",
+      "responses": [
+        {
+          "uuid": "50d82c32-152e-47c4-a899-02cb9ffd0e4a",
+          "body": "{\n  \"email\": \"{{body 'email'}}\",\n  \"first_name\": \"{{body 'first_name'}}\",\n  \"last_name\": \"{{body 'last_name'}}\",\n  \"created_at\": \"{{now 'YYYY-MM-DD'}}T{{time '00:00' '23:00' 'HH:mm:ss'}}Z\"\n}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "8a321b9d-4146-49ae-a2bd-72f7110bddfe",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "first_name",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "last_name",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "first_name",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "last_name",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "25892759-2480-4bda-8bae-2816f78bec23",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "0fc04be5-815b-4752-aac4-2accdcf2082c",
+      "documentation": "Get the detail of the current ",
+      "method": "get",
+      "endpoint": "user/current/",
+      "responses": [
+        {
+          "uuid": "b2f03645-4291-450a-869d-6a3f7d146912",
+          "body": "{\n  \"email\": \"{{email}}\",\n  \"first_name\": \"{{firstName}}\",\n  \"last_name\": \"{{lastName}}\",\n  \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "59dcaa0c-2f32-4780-9908-3e853036d20f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "bdbe7851-6427-4588-b72f-84ebd72f191e",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "b35939f8-b19f-4429-95ce-bd1e7d7f5b1b",
+      "documentation": "Change the password of the current user.",
+      "method": "post",
+      "endpoint": "user/change_password/",
+      "responses": [
+        {
+          "uuid": "f095cbb8-d089-4195-b871-de67ee22f0d2",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "910c756e-7f4d-4542-98b2-532b500c1076",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "current_password",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "new_password",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "confirm_new_password",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "current_password",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "new_password",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "confirm_new_password",
+              "value": "",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "c444b602-3b81-41d8-893f-ba8e15375ca9",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "09761613-389a-4339-adbe-23d3c7c0bcee",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "44cd094a-73b2-40a9-aeb2-ae2067bda44f",
+      "documentation": "Update basic information of the current user",
+      "method": "put",
+      "endpoint": "user/update/",
+      "responses": [
+        {
+          "uuid": "23d74d4d-e2c8-45c6-9848-854b53351ac8",
+          "body": "{\n  \"email\": \"{{email}}\",\n  \"first_name\": \"{{body 'first_name'}}\",\n  \"last_name\": \"{{body 'last_name'}}\",\n  \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "b231ff1b-ac26-4857-900f-d75d42f4596c",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "first_name",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "last_name",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "first_name",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "last_name",
+              "value": "",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "b317a133-d8ee-46dc-a761-de16b86f6bee",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "412b7961-4b29-453e-a9ef-c18b18c8ecbb",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "ca1b1f95-26de-4df4-a79c-3cae61dd1386",
+      "documentation": "Create a system on the database",
+      "method": "post",
+      "endpoint": "system/",
+      "responses": [
+        {
+          "uuid": "661a7d24-6677-49e4-8950-887dbe339ee6",
+          "body": "{\n  \"uuid\": \"{{guid}}\"\n  \"name\": \"{{body 'name'}}\",\n  \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "29a72848-d7bf-42e0-ab7f-7b03d0584474",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "name",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "name",
+              "value": "",
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "202dfdba-37a7-44b6-81d4-5d0e55318b18",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "5ab39b5b-5df1-4430-978f-b35d8ca1c688",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "47f32762-59d5-4a63-8197-5331eb57d62f",
+      "documentation": "List all the systems you created",
+      "method": "get",
+      "endpoint": "system/",
+      "responses": [
+        {
+          "uuid": "9c2cbdfb-1c65-4711-a643-6874875a8bfc",
+          "body": "{\n  \"systems\": [\n      {{#repeat (queryParam 'per_page' 10) comma=true}}\n      {\n        \"uuid\": \"{{guid}}\",\n        \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n        \"name\": \"Easy-{{lastName}}\",\n      }\n      {{/repeat}}\n  ],\n  \"page_number\": {{queryParam 'page_number' 1}},\n  \"has_next_page\": {{boolean}},\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "f311810e-7e5e-4bde-904d-780233127ed0",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "25e4d126-5391-4d72-978a-bcecd6d1f598",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "52fa5ca5-e0b7-4cdb-9902-7a0652d3a580",
+      "documentation": "Get a specific system information",
+      "method": "get",
+      "endpoint": "system/:systemUUID/",
+      "responses": [
+        {
+          "uuid": "d372c297-b851-4744-b164-8f8633663c80",
+          "body": "{\n  \"uuid\": \"{{urlParam 'systemUUID'}}\",\n  \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n  \"name\": \"{{firstName}}\",\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "3fd3f11b-111c-4b73-95bd-ff2f17ec1002",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "c3f829ea-412c-4923-adfa-47aed09f3c36",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "e165067b-e4b9-41db-b1ac-7f5ecc3a2583",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Not-Found",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "96c86b4a-12cd-4d36-8634-743ec90aa2fe",
+      "documentation": "Create a category on the database",
+      "method": "post",
+      "endpoint": "category/",
+      "responses": [
+        {
+          "uuid": "282afc87-85c1-4fd8-8c8d-8095a764c8a3",
+          "body": "{\n  \"uuid\": \"{{guid}}\",\n  \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n  \"name\": \"{{body 'name'}}\",\n}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "e41b2ed1-4901-4e15-b86c-46432ed31c44",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "name",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "name",
+              "value": "",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "80a9a87b-705a-4d4e-bcc7-288414302e36",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "66a43446-f465-4331-bb2a-94571be0d086",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "bd834fce-db3b-4515-90ce-26a1e5816861",
+      "documentation": "List all the categories",
+      "method": "get",
+      "endpoint": "category/",
+      "responses": [
+        {
+          "uuid": "ff41be64-3209-4d4c-8f08-c250612640b1",
+          "body": "{\n  \"categories\": [\n      {{#repeat (int 0 (queryParam 'per_page' 10)) comma=true}}\n      {\n        \"uuid\": \"{{guid}}\",\n        \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n        \"name\": \"{{lastName}}\",\n      }\n      {{/repeat}}\n  ],\n  \"page_number\": {{queryParam 'page_number' 1}},\n  \"has_next_page\": {{boolean}},\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "7eae02c2-09fc-4eee-8adc-6246073272df",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "f82e13cb-4878-4f74-b463-5fc205448277",
+      "documentation": "Detail of category",
+      "method": "get",
+      "endpoint": "category/:categoryUUID/",
+      "responses": [
+        {
+          "uuid": "ae943d53-16d1-4d51-acfd-075752415ddf",
+          "body": "{\n  \"uuid\": \"{{urlParam 'categoryUUID'}}\",\n  \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n  \"name\": \"{{lastName}}\",\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "8dadb881-f1ec-47b5-b5d9-20942b1730f2",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "1e7f38f9-fd2e-4213-83fd-88c35e2ef584",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "090f9a30-3d87-4820-b0e1-0ef6a52be355",
+      "documentation": "Create a learning object on the database",
+      "method": "post",
+      "endpoint": "learning_object/",
+      "responses": [
+        {
+          "uuid": "a659948d-2c8a-4872-8d81-af168449196a",
+          "body": "{\n  \"uuid\": \"{{guid}}\",\n  \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n  \"title\": \"{{body 'title'}}\",\n  \"content\": \"{{body 'content' (lorem 0 400)}}\",\n  \"description\": \"{{body 'description'}}\",\n  \"categories\": [\n      {{#repeat (len (body 'categories')) comma=true}}\n      {\n        \"uuid\": \"{{guid}}\",\n        \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n        \"name\": \"{{body (concat 'categories.' (@index) '.name')}}\",\n      }\n      {{/repeat}}\n  ],\n  \"extra_data\": {},\n  \"creator_email\": \"{{email}}\",\n  \"is_forked\": false,\n  \"system\": \"{{firstName}}\",\n}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "d567c1a6-1e6e-4fd8-abaa-9a26c3a9caf0",
+          "body": "{\n  \n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "title",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "description",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "categories",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "system_uuid",
+              "value": "",
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "categories",
+              "value": "",
+              "operator": "empty_array"
+            },
+            {
+              "target": "body",
+              "modifier": "categories",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "title",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "description",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "system_uuid",
+              "value": "",
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "5a36e4a8-189f-458d-9fd1-a5ca5834ac29",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "11da3f9b-5195-47cf-9848-20c140165631",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "824745c3-8d37-4fbf-87e6-fc7bc65a21cc",
+      "documentation": "List all the learning objects",
+      "method": "get",
+      "endpoint": "learning_object/",
+      "responses": [
+        {
+          "uuid": "96495805-128d-483d-942f-0fc8deb8b234",
+          "body": "{\n  \"learning_objects\": [\n      {{#repeat (queryParam 'per_page' 10) comma=true}}\n      {\n        \"uuid\": \"{{guid}}\",\n        \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n        \"title\": \"{{firstName}}\",\n        \"content\": \"{{lorem (int 0 250)}}\",\n        \"description\": \"{{lorem (int 0 50)}}\",\n        \"categories\": [\n            {{#repeat (int 1 4) comma=true}}\n            {\n              \"uuid\": \"{{guid}}\",\n              \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n              \"name\": \"{{firstName}}\"\n            }\n            {{/repeat}}\n        ],\n        \"extra_data\": {},\n        \"creator_email\": \"{{email}}\",\n        \"is_forked\": {{boolean}},\n        \"system\": \"{{firstName}}\"\n      }\n      {{/repeat}}\n  ],\n  \"page_number\": {{queryParam 'page_number' 1}},\n  \"has_next_page\": {{boolean}}\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "3a4b0847-5443-4d64-b1f7-0be0d2bfc830",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "83885e26-5498-43d9-899e-54c833cde65f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "25e0dfbc-2c97-4da9-8b48-e5be41b50973",
+      "documentation": "Detail of a specific learning object.",
+      "method": "get",
+      "endpoint": "learning_object/:objectUUID/",
+      "responses": [
+        {
+          "uuid": "e9b5082c-28f5-49ca-8dc8-1c5d0cdb8aaf",
+          "body": "{\n        \"uuid\": \"{{urlParam 'objectUUID'}}\",\n        \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n        \"title\": \"{{title}}\",\n        \"content\": \"{{lorem (int 0 500)}}\",\n        \"description\": \"{{lorem (int 0 150)}}\",\n        \"categories\": [\n            {{#repeat (int 0 20) comma=true}}\n            {\n              \"uuid\": \"{{guid}}\",\n              \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n              \"name\": \"{{firstName}}\",\n            }\n            {{/repeat}}\n        ],\n        \"extra_data\": {},\n        \"creator_email\": \"{{email}}\",\n        \"is_forked\": {{boolean}},\n        \"system\": \"{{firstName}}\",\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "fb737f7e-ca14-4550-bbec-5d86e5b3bc52",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "45226c33-8456-4034-9ce4-fe83749b8d84",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Not-Found",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "4b27634d-3752-4cf1-a846-5b391b26ef8d",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "5adbfe9a-c612-4b93-b050-1d43d33c8773",
+      "documentation": "Fork a learning object of the database",
+      "method": "post",
+      "endpoint": "learning_object/:objectUUID/fork/",
+      "responses": [
+        {
+          "uuid": "a422989f-9552-4e4d-aa53-ff92c26127ca",
+          "body": "{\n  \"uuid\": \"{{guid}}\",\n  \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n  \"title\": \"{{body 'title' (title)}}\",\n  \"content\": \"{{body 'content' (lorem 0 400)}}\",\n  \"description\": \"{{body 'description' (lorem 0 150)}}\",\n  \"categories\": [\n      {{#repeat (len (body 'categories') comma=true}}\n      {\n        \"uuid\": \"{{guid}}\",\n        \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n        \"name\": \"{{body (concat 'categories.' (@index) '.name')}}\",\n      }\n      {{/repeat}}\n  ],\n  \"extra_data\": {},\n  \"creator_email\": \"{{email}}\",\n  \"is_forked\": true,\n  \"system\": \"{{firstName}}\",\n}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "3755dccb-f2f2-40db-8f77-35157a1f975f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "system_uuid",
+              "value": "",
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "system_uuid",
+              "value": "",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "101be170-7b9e-46ea-9274-c15b4a91f31f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "2fe0349a-69d3-479f-8ccc-d9ea0c0224cf",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "94eeeb2f-6df5-4eee-b39d-c2e42080d621",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Not-Found",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "c59e38e4-6097-496a-be31-ec234c11b565",
+      "documentation": "Make a quality control",
+      "method": "post",
+      "endpoint": "learning_object/:objectUUID/quality/",
+      "responses": [
+        {
+          "uuid": "a9f45040-583e-4967-ae23-7aecb94ae76c",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "",
+              "value": "",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "cab2e5b5-4912-416d-9a47-3cc7e16ddfc5",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "cb5f591b-4743-4654-b0d6-8660a6dca71d",
+      "documentation": "Select the usage of a learning object to complete a task",
+      "method": "post",
+      "endpoint": "learning_object/:objectUUID/select/",
+      "responses": [
+        {
+          "uuid": "19fec588-3e18-42f2-9afc-e71754090199",
+          "body": "{\n  \"uuid\": \"{{guid}}\",\n  \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "1a59ce5b-1345-459a-bfb3-b985af55812e",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "b67453ec-4230-4fc5-b966-a46681dd5417",
+      "documentation": "List the users learning objects",
+      "method": "get",
+      "endpoint": "learning_object/my_learning_objects/",
+      "responses": [
+        {
+          "uuid": "007d727b-9d1d-4510-a2be-7cee7235b7e4",
+          "body": "{\n  \"learning_objects\": [\n      {{#repeat (int 0 (queryParam 'per_page' 10)) comma=true}}\n      {\n        \"uuid\": \"{{guid}}\",\n        \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n        \"title\": \"{{title}}\",\n        \"content\": \"{{lorem (int 0 500)}}\",\n        \"description\": \"{{lorem (int 0 150)}}\",\n        \"categories\": [\n            {{#repeat (int 0 20) comma=true}}\n            {\n              \"uuid\": \"{{guid}}\",\n              \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n              \"name\": \"{{firstName}}\",\n            }\n            {{/repeat}}\n        ],\n        \"extra_data\": {},\n        \"creator_email\": \"{{email}}\",\n        \"is_forked\": {{boolean}},\n        \"system\": \"{{firstName}}\",\n      }\n      {{/repeat}}\n  ],\n  \"page_number\": {{queryParam 'page_number' 1}},\n  \"has_next_page\": {{boolean}},\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "b306157b-2150-40e8-8853-898584e168cc",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "f07dd91f-a298-4f9a-9641-572f61de969a",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "4f7b9288-8cfb-4270-af2a-d3aa4a2f29a6",
+      "documentation": "Recomendation system on the learning objects based on current user.",
+      "method": "get",
+      "endpoint": "recomend/",
+      "responses": [
+        {
+          "uuid": "ac1fc5b7-092b-4978-be12-1143bcdc7b50",
+          "body": "{\n  \"learning_objects\": [\n      {{#repeat (int 0 (queryParam 'per_page' 10)) comma=true}}\n      {\n        \"uuid\": \"{{guid}}\",\n        \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n        \"title\": \"{{title}}\",\n        \"content\": \"{{lorem (int 0 500)}}\",\n        \"description\": \"{{lorem (int 0 150)}}\",\n        \"categories\": [\n            {{#repeat (int 0 20) comma=true}}\n            {\n              \"uuid\": \"{{guid}}\",\n              \"created_at\": \"{{date '2020-01-01' (now 'YYYY-MM-DD') 'yyyy-MM-dd'}}T{{time '00:00' '23:59' 'HH:mm:ss'}}Z\",\n              \"name\": \"{{firstName}}\",\n            }\n            {{/repeat}}\n        ],\n        \"extra_data\": {},\n        \"creator_email\": \"{{email}}\",\n        \"is_forked\": {{boolean}},\n        \"system\": \"{{firstName}}\",\n      }\n      {{/repeat}}\n  ],\n  \"page_number\": {{queryParam 'page_number' 1}},\n  \"has_next_page\": {{boolean}},\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Token [2332a9a7a3c8828082b3784c0|1dfde6197c36da8dd3506810c|9e8b9347c5b0d9cfab5183fe7|8ae2cace90c18a922d0704813]$",
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "7835be66-6304-447f-abed-58c558972001",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "b6bc56f7-d22d-4417-b4c3-2bd3c3e055af",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Mock-Error",
+              "value": "True",
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    },
+    {
+      "uuid": "a6f881a8-0af2-4dcd-8787-23b02257ea32",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "",
+      "responses": [
+        {
+          "uuid": "2a8c09bc-7b19-43dd-b3f0-4ebd3fd43945",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "filePath": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "randomResponse": false,
+      "sequentialResponse": false
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ]
+}
