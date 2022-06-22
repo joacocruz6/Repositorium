@@ -293,6 +293,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
             "creator_email": "some_email@example.com",
             "is_forked": false,
             "system": "Easy-Study",
+            "files": []
         }
     ```
 - **`GET /api/v100/learning_object/`**: Get a paginated response of all the learning objects in the system. This does not include the learning object files, that is on a different endpoint (if it has files). As previous ones, this could have `per_page` and `page_number` url parameters.
@@ -312,6 +313,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
                 "creator_email": "some_email@example.com",
                 "is_forked": false,
                 "system": "Easy-Study",
+                "files": ["bd7b0d58-2828-465f-a068-190898fdd2cf", "7719a102-9e6f-4bd7-bc50-c779fc436133",]
             }],
             "page_number": 1,
             "has_next_page": false,
@@ -334,6 +336,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
             "creator_email": "some_email@example.com",
             "is_forked": false,
             "system": "Easy-Study",
+            "files": ["bd7b0d58-2828-465f-a068-190898fdd2cf", "7719a102-9e6f-4bd7-bc50-c779fc436133",]
         }
     ```
 
@@ -387,9 +390,18 @@ This API is divided in two, one for the learning objects as an entity and anothe
 
 
 #### **Learning Objects Files**
-The files of a learning object will be managed on this subsets of endpoints. All require that a learning object is created previously and they can be uploaded in any time on the future.
+The files of a learning object will be managed on this subsets of endpoints.
 
-
+**Auth Required:**
+- **`POST /api/v100/learning_objects/files/<learning_object_uuid>`**: Here you upload a file to the learning object which uuid is `<learning_object_uuid>`. The payload need to have the the header `Content-Disposition: attachment; filename=<name_of_the_file>` in it. The body should only be the file that is going to be uploaded. The response should look like:
+    ```js
+    Status: 201 CREATED
+    {
+        "name": "hola.txt",
+        "learning_object_uuid": "b474a152-2ed1-4d25-a26f-0227a4f68315"
+    }
+    ```
+- **`GET /api/v100/learning_objects/files/<file_uuid>/`**: Get the file that it is stored on the server. It may be a download or an attachment (if param is present).
 
 #### **Recomendation System**
 This will change (with different versions) when they are being developed.
@@ -411,6 +423,7 @@ The only endpoint is with **Auth Required**:
             "creator_email": "some_email@example.com",
             "is_forked": false,
             "system": "Easy-Study",
+            "files": ["bd7b0d58-2828-465f-a068-190898fdd2cf", "7719a102-9e6f-4bd7-bc50-c779fc436133",]
         }],
         "page_number": 1,
         "has_next_page": false,

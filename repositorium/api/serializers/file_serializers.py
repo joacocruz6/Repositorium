@@ -9,7 +9,7 @@ class FileUploadSerializer(serializers.Serializer):
 
 
 class LearningObjectFileSerializer(BaseSerializer):
-    file_route = serializers.FilePathField(settings.FILE_DIR)
+    name = serializers.CharField()
     learning_object_uuid = serializers.SerializerMethodField()
 
     def get_learning_object_uuid(self, instance) -> str:
