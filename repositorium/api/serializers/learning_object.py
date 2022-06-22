@@ -1,3 +1,5 @@
+from typing import List
+
 from rest_framework import serializers
 
 from repositorium.api.serializers.base import BaseSerializer
@@ -20,6 +22,7 @@ class LearningObjectSerializer(BaseSerializer):
     categories = CategorySerializer(many=True)
     extra_data = serializers.JSONField()
     creator_email = serializers.EmailField()
+    files = serializers.SerializerMethodField()
 
     # Property
     is_forked = serializers.BooleanField()
@@ -31,6 +34,9 @@ class LearningObjectSerializer(BaseSerializer):
         if instance.created_on is None:
             return ""
         return instance.created_on.name
+
+    def get_files(self, instance) -> List[str]:
+        return list(instance.files.values_list("uuid", flat=True))
 
 
 class LearningObjectForkSerializer(serializers.Serializer):
