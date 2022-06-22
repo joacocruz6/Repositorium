@@ -3,4 +3,4 @@ __pycache__/
 .vscode
 .venv/
 *.ipynb
-Repositorium/settings/local.py
+repositorium/settings/local.py

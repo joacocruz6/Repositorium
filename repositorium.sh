@@ -3,7 +3,8 @@
 function repositorium(){
     case "$1" in
     "install")
-            if [[ "$#" -eq 0]] ; then
+            if [ "$#" -eq 0 ]
+            then
                 pip install "$@"
             else
                 pip install -r requirements.txt
@@ -22,7 +23,7 @@ function repositorium(){
                ;;
     "up") python manage.py runserver 0.0.0.0:8000
           ;;
-    "test") pytest $2
+    "test"|"tests") pytest $2
             ;;
     *)
         echo "install: Install requirements or provided package"
