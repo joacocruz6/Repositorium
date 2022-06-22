@@ -1,5 +1,6 @@
 import uuid
 
+from django.conf import settings
 from django.http import FileResponse
 from rest_framework import status
 from rest_framework.decorators import parser_classes
@@ -32,9 +33,7 @@ class FileManagementAPIView(APIView):
             if serializer.is_valid():
                 uploaded_file = serializer.validated_data["file"]
                 file_uuid = str(uuid.uuid4())
-                file_route = (
-                    f"/files/{learning_object.uuid}/{file_uuid}/{uploaded_file.name}"
-                )
+                file_route = f"{settings.FILE_DIR}{learning_object.uuid}/{file_uuid}/{uploaded_file.name}"
                 learning_object_file = (
                     learning_object_file_manager.upload_learning_object_file(
                         learning_object=learning_object,
