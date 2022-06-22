@@ -66,6 +66,7 @@ class LearningObjectUsage(BaseUUIDModel):
 
 
 class LearningObjectFile(BaseUUIDModel):
+    name = models.CharField(max_length=50)
     file_route = models.FilePathField()
     learning_object = models.ForeignKey(
         to=LearningObject, on_delete=models.CASCADE, related_name="files"

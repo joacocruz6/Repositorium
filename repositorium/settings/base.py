@@ -28,6 +28,7 @@ def get_env(var_name: str, default: Any = None) -> str:
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+FILE_DIR = f"{BASE_DIR}/files/"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/

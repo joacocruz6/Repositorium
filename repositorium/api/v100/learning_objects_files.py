@@ -28,16 +28,19 @@ class FileManagementAPIView(APIView):
             learning_object = learning_object_manager.get_learning_object_by_uuid(
                 uuid=uuid
             )
-            file_uuid = str(uuid.uuid4())
-            file_route = f"/files/{learning_object.uuid}/{file_uuid}"
             serializer = FileUploadSerializer(data=request.data)
             if serializer.is_valid():
+                uploaded_file = serializer.validated_data["file"]
+                file_uuid = str(uuid.uuid4())
+                file_route = (
+                    f"/files/{learning_object.uuid}/{file_uuid}/{uploaded_file.name}"
+                )
                 learning_object_file = (
                     learning_object_file_manager.upload_learning_object_file(
                         learning_object=learning_object,
                         uuid=file_uuid,
                         file_route=file_route,
-                        file_descriptor=serializer.validated_data["file"],
+                        file_descriptor=uploaded_file,
                     )
                 )
                 file_serializer = LearningObjectFileSerializer(learning_object_file)
@@ -58,5 +61,7 @@ class FileManagementAPIView(APIView):
             )
         )
         return FileResponse(
-            open(learning_object_file.file_route, "rb"), as_attachment=as_attachment
+            open(learning_object_file.file_route, "rb"),
+            as_attachment=as_attachment,
+            filename=learning_object_file.name,
         )
