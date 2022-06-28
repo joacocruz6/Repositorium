@@ -21,6 +21,9 @@ function repositorium(){
     "jupyter") echo "Running jupyter with django"
                python manage.py shell_plus --notebook
                ;;
+    "shell") echo "Running the django shell"
+             python manage.py shell
+             ;;
     "up") python manage.py runserver 0.0.0.0:8000
           ;;
     "test"|"tests") pytest $2
@@ -31,6 +34,7 @@ function repositorium(){
         echo "makemigrations or makemigration: Run provided migrations"
         echo "migrate: Run the migrations on the database"
         echo "jupyter: Run jupyter notebook"
+        echo "shell: Run the shell on the console"
         echo "up: run local server"
         echo "test: run the tests with pytest"
         ;;

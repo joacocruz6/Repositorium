@@ -393,7 +393,7 @@ This API is divided in two, one for the learning objects as an entity and anothe
 The files of a learning object will be managed on this subsets of endpoints.
 
 **Auth Required:**
-- **`POST /api/v100/learning_objects/files/<learning_object_uuid>`**: Here you upload a file to the learning object which uuid is `<learning_object_uuid>`. The payload need to have the the header `Content-Disposition: attachment; filename=<name_of_the_file>` in it. The body should only be the file that is going to be uploaded. The response should look like:
+- **`POST /api/v100/learning_object/files/<learning_object_uuid>`**: Here you upload a file to the learning object which uuid is `<learning_object_uuid>`. The payload need to have the the header `Content-Disposition: attachment; filename=<name_of_the_file>` in it. The body should only be the file that is going to be uploaded. The response should look like:
     ```js
     Status: 201 CREATED
     {
@@ -401,7 +401,7 @@ The files of a learning object will be managed on this subsets of endpoints.
         "learning_object_uuid": "b474a152-2ed1-4d25-a26f-0227a4f68315"
     }
     ```
-- **`GET /api/v100/learning_objects/files/<file_uuid>/`**: Get the file that it is stored on the server. It may be a download or an attachment (if param is present).
+- **`GET /api/v100/learning_object/files/<file_uuid>/`**: Get the file that it is stored on the server. It may be a download or an attachment (if param is present).
 
 #### **Recomendation System**
 This will change (with different versions) when they are being developed.

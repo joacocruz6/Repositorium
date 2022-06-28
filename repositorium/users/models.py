@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
 
 # Create your models here.
@@ -12,6 +12,8 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
+
+    objects = UserManager()
 
     @property
     def full_name(self):

@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import action, permission_classes
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -96,8 +96,9 @@ class UserViewSet(ViewSet):
 
 
 class AuthViewSet(ViewSet):
-    @action(methods=["post"], detail=False, url_name="login")
-    @permission_classes([AllowAny])
+    @action(
+        methods=["post"], detail=False, url_name="login", permission_classes=[AllowAny]
+    )
     def login(self, request: Request, *args, **kwargs) -> Response:
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -113,8 +114,12 @@ class AuthViewSet(ViewSet):
             return Response(status=status.HTTP_200_OK, data=data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=["post"], detail=False, url_name="logout")
-    @permission_classes([IsAuthenticated])
+    @action(
+        methods=["post"],
+        detail=False,
+        url_name="logout",
+        permission_classes=[IsAuthenticated],
+    )
     def logout(self, request: Request, *args, **kwargs):
         user = request.user
         auth_token = request.auth
