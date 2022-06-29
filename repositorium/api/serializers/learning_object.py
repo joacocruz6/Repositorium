@@ -12,7 +12,7 @@ class LearningObjectCreateSerializer(serializers.Serializer):
     description = serializers.CharField(allow_blank=True, max_length=125)
     categories = serializers.ListField(child=serializers.CharField())
     system_uuid = serializers.UUIDField()
-    extra_data = serializers.JSONField(required=False)
+    extra_data = serializers.JSONField(required=False, default=dict)
 
 
 class LearningObjectSerializer(BaseSerializer):

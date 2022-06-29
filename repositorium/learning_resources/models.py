@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from repositorium.utils.models import BaseUUIDModel
@@ -41,7 +42,7 @@ class LearningObject(BaseUUIDModel):
     extra_data = models.JSONField(default=dict, null=True, blank=True)
 
     def __str__(self):
-        return f"LearningObject {self.name}"
+        return f"LearningObject {self.title}"
 
     @property
     def is_forked(self):
@@ -67,7 +68,7 @@ class LearningObjectUsage(BaseUUIDModel):
 
 class LearningObjectFile(BaseUUIDModel):
     name = models.CharField(max_length=50)
-    file_route = models.FilePathField()
+    file_route = models.CharField(max_length=200)
     learning_object = models.ForeignKey(
         to=LearningObject, on_delete=models.CASCADE, related_name="files"
     )

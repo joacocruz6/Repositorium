@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import action, permission_classes
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -76,10 +76,14 @@ class UserViewSet(ViewSet):
 
     @action(methods=["put"], detail=False, url_path="update", url_name="update_user")
     def update_user(self, request: Request, *args, **kwargs):
-        serializer = UpdateUserSerializer(data=request.user)
+        serializer = UpdateUserSerializer(data=request.data)
         if serializer.is_valid():
-            first_name = serializer.get("first_name", request.user.first_name)
-            last_name = serializer.get("last_name", request.user.last_name)
+            first_name = serializer.validated_data.get(
+                "first_name", request.user.first_name
+            )
+            last_name = serializer.validated_data.get(
+                "last_name", request.user.last_name
+            )
             try:
                 user_manager.update_user(
                     user_email=request.user.email,
@@ -92,12 +96,15 @@ class UserViewSet(ViewSet):
             except (UserDoesNotExists, MultipleUsersReturned):
                 return Response(status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST, data={"errors": serializer.errors}
+            )
 
 
 class AuthViewSet(ViewSet):
-    @action(methods=["post"], detail=False, url_name="login")
-    @permission_classes([AllowAny])
+    @action(
+        methods=["post"], detail=False, url_name="login", permission_classes=[AllowAny]
+    )
     def login(self, request: Request, *args, **kwargs) -> Response:
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -113,8 +120,12 @@ class AuthViewSet(ViewSet):
             return Response(status=status.HTTP_200_OK, data=data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=["post"], detail=False, url_name="logout")
-    @permission_classes([IsAuthenticated])
+    @action(
+        methods=["post"],
+        detail=False,
+        url_name="logout",
+        permission_classes=[IsAuthenticated],
+    )
     def logout(self, request: Request, *args, **kwargs):
         user = request.user
         auth_token = request.auth

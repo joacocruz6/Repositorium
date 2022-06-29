@@ -24,9 +24,9 @@ class RecomenderViewSet(ViewSet):
                 categories_uuids=categories_uuids
             )
         )
-        paginator = Paginator(learning_objects)
+        paginator = Paginator(learning_objects, per_page)
         try:
-            page = paginator.get_page()
+            page = paginator.get_page(page_number)
         except EmptyPage:
             data = {
                 "page_number": page_number,

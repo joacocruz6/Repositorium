@@ -1,3 +1,4 @@
+import os
 from typing import Optional, Union
 from uuid import UUID
 
@@ -12,13 +13,14 @@ def upload_learning_object_file(
     file_route: str,
     file_descriptor: File,
 ) -> LearningObjectFile:
-    learning_object_file = LearningObjectFile.objects.create(
-        uuid=uuid, file_route=file_route, learning_object=learning_object
-    )
+    os.makedirs(os.path.dirname(file_route), exist_ok=True)
     with open(file_route, "wb+") as fd:
         file_descriptor.seek(0)
         for chunk in file_descriptor.chunks():
             fd.write(chunk)
+    learning_object_file = LearningObjectFile.objects.create(
+        uuid=uuid, file_route=file_route, learning_object=learning_object
+    )
     return learning_object_file
 
 
