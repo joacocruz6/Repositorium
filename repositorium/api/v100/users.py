@@ -76,10 +76,14 @@ class UserViewSet(ViewSet):
 
     @action(methods=["put"], detail=False, url_path="update", url_name="update_user")
     def update_user(self, request: Request, *args, **kwargs):
-        serializer = UpdateUserSerializer(data=request.user)
+        serializer = UpdateUserSerializer(data=request.data)
         if serializer.is_valid():
-            first_name = serializer.get("first_name", request.user.first_name)
-            last_name = serializer.get("last_name", request.user.last_name)
+            first_name = serializer.validated_data.get(
+                "first_name", request.user.first_name
+            )
+            last_name = serializer.validated_data.get(
+                "last_name", request.user.last_name
+            )
             try:
                 user_manager.update_user(
                     user_email=request.user.email,
@@ -92,7 +96,9 @@ class UserViewSet(ViewSet):
             except (UserDoesNotExists, MultipleUsersReturned):
                 return Response(status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST, data={"errors": serializer.errors}
+            )
 
 
 class AuthViewSet(ViewSet):
