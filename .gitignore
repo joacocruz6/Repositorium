@@ -5,3 +5,4 @@ __pycache__/
 *.ipynb
 repositorium/settings/local.py
 repositorium/files/*
+.env.prod
