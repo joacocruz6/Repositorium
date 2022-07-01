@@ -6,6 +6,8 @@ COPY ./repositorium /repositorium/repositorium
 COPY ./manage.py /repositorium/
 COPY ./requirements.txt /repositorium/
 COPY ./entrypoint.prod.sh /repositorium/
+RUN sed -i 's/\r$//g' /repositorium/entrypoint.prod.sh
+RUN chmod +x /repositorium/entrypoint.prod.sh
 
 RUN chmod -R 755 /repositorium/
 WORKDIR /repositorium/
