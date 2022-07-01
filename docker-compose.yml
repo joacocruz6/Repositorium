@@ -27,6 +27,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=db
+      - DJANGO_DEBUG=True
     depends_on:
       - db
 

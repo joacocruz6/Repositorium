@@ -34,10 +34,13 @@ FILE_DIR = f"{BASE_DIR}/files"
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-$i2h4(x7fa9x@+vmhe%@03c(#me^_*_ke5s88wn4y@1!50yox="
+SECRET_KEY = get_env(
+    "DJANGO_SECRET_KEY",
+    default="django-insecure-$i2h4(x7fa9x@+vmhe%@03c(#me^_*_ke5s88wn4y@1!50yox=",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(get_env("DJANGO_DEBUG", default=False))
 
 ALLOWED_HOSTS = []
 
