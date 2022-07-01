@@ -6,3 +6,4 @@ __pycache__/
 repositorium/settings/local.py
 repositorium/files/*
 .env.prod
+.env.prod.db
