@@ -1,0 +1,18 @@
+FROM python:3.8
+
+ENV PYTHONUNBUFFERED 1
+
+COPY ./repositorium /repositorium/repositorium
+COPY ./manage.py /repositorium/
+COPY ./requirements.txt /repositorium/
+COPY ./entrypoint.prod.sh /repositorium/
+
+RUN chmod -R 755 /repositorium/
+WORKDIR /repositorium/
+
+RUN apt-get update
+RUN pip install -r requirements.txt
+RUN adduser repositorium
+USER repositorium
+
+ENTRYPOINT ["/repositorium/entrypoint.prod.sh"]
