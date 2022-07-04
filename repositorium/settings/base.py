@@ -42,7 +42,7 @@ SECRET_KEY = get_env(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(get_env("DJANGO_DEBUG", default=False))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
