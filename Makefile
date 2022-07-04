@@ -31,3 +31,15 @@ logs:
 	@docker-compose logs
 
 reset: down prune build
+
+prod-up-build:
+	@docker-compose -f docker-compose.prod.yml up -d --build
+
+prod-up:
+	@docker-compose -f docker-compose.prod.yml up -d
+
+prod-down:
+	@docker-compose -f docker-compose.prod.yml down
+
+prod-logs:
+	@docker-compose -f docker-compose.prod.yml logs
