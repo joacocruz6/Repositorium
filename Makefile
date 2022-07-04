@@ -46,3 +46,9 @@ prod-down:
 
 prod-logs:
 	@docker-compose -f docker-compose.prod.yml logs
+
+prod-migrate:
+	@docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput
+
+prod-collectstatic:
+	@docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
