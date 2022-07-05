@@ -113,7 +113,7 @@ class AuthViewSet(ViewSet):
             user = authenticate(email=email, password=password)
             if user is None:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-            token = Token.objects.create(user=user)
+            token, _ = Token.objects.get_or_create(user=user)
             data = {
                 "auth_token": token.key,
             }
