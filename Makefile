@@ -52,3 +52,8 @@ prod-migrate:
 
 prod-collectstatic:
 	@docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
+
+prod-shell:
+	@docker-compose -f docker-compose.prod.yml exec web python manage.py shell
+
+prod-deploy: prod-down prod-up-build prod-migrate
