@@ -54,7 +54,11 @@ class LearningObjectViewSet(
         return learning_objects_manager.get_learning_object_by_uuid(uuid=pk)
 
     def get_objects(self, request, *args, **kwargs) -> QuerySet:
-        return learning_objects_manager.get_all_learning_objects()
+        category_names_filter = request.query_params.get("categories", [])
+        learning_object_title_filter = request.query_params.get("title", "")
+        return learning_objects_manager.get_learning_objects_filter_with_title_and_category(
+            title=learning_object_title_filter, category_names=category_names_filter
+        )
 
     def create_object(self, serializer_data: Dict, *args, **kwargs) -> LearningObject:
         title = serializer_data["title"]
