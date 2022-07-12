@@ -53,7 +53,7 @@ class LearningObjectViewSet(
     def get_object(self, pk: str, *args, **kwargs) -> Model:
         return learning_objects_manager.get_learning_object_by_uuid(uuid=pk)
 
-    def get_objects(self, *args, **kwargs) -> QuerySet:
+    def get_objects(self, request, *args, **kwargs) -> QuerySet:
         return learning_objects_manager.get_all_learning_objects()
 
     def create_object(self, serializer_data: Dict, *args, **kwargs) -> LearningObject:
@@ -195,7 +195,7 @@ class LearningObjectViewSet(
     def my_learning_objects(self, request: Request, *args, **kwargs) -> Response:
         per_page = request.query_params.get("per_page", self.per_page_default)
         page_number = request.query_params.get("page_number", 1)
-        learning_objects = self.get_objects()
+        learning_objects = self.get_objects(request)
         learning_objects = learning_objects.filter(
             creator_email=request.user.email
         ).order_by("-created_at")
