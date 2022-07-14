@@ -93,6 +93,38 @@ def test_list_learning_object_view(
     assert len(response.data["learning_objects"]) == 5
 
 
+def test_filter_learning_object_view(
+    get_auth_client, user, system, get_list_url, learning_object_basename
+):
+    learning_object = mixer.blend(
+        "learning_resources.LearningObject", title="Some Title", created_on=system
+    )
+    categories = mixer.cycle(5).blend("learning_resources.Category")
+    mixer.blend("learning_resources.LearningObject", title="Shrek").categories.set(
+        categories[4:]
+    )
+    learning_object.categories.set(categories)
+    url_category = get_list_url(learning_object_basename)
+    url_title = get_list_url(learning_object_basename)
+    client = get_auth_client(user)
+    response_category = client.get(
+        url_category,
+        {"categories": ",".join([category.name for category in categories[:3]])},
+        content_type="application/json",
+    )
+    response_title = client.get(
+        url_title, {"title": "some"}, content_type="application/json"
+    )
+    assert response_category.status_code == 200
+    assert response_title.status_code == 200
+    assert response_category.data["page_number"] == 1
+    assert response_title.data["page_number"] == 1
+    assert not response_category.data["has_next_page"]
+    assert not response_title.data["has_next_page"]
+    assert len(response_category.data["learning_objects"]) == 1
+    assert len(response_title.data["learning_objects"]) == 1
+
+
 def test_list_learning_objects_empty(
     get_auth_client, user, get_list_url, learning_object_basename
 ):

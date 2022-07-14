@@ -100,7 +100,9 @@ def get_learning_objects_filter_with_title_and_category(
 ):
     learning_objects = get_all_learning_objects()
     if len(title) > 0:
-        learning_objects.filter(title__startswith=title)
+        learning_objects = learning_objects.filter(title__istartswith=title)
     if len(category_names) > 0:
-        learning_objects.filter(categories__name__in=category_names)
+        learning_objects = learning_objects.filter(
+            categories__name__in=category_names
+        ).distinct()
     return learning_objects

@@ -14,6 +14,12 @@ class LearningObjectCreateSerializer(serializers.Serializer):
     system_uuid = serializers.UUIDField()
     extra_data = serializers.JSONField(required=False, default=dict)
 
+    def validate_categories(self, value):
+        for category in value:
+            if "," in category:
+                raise serializers.ValidationError("Can't be a ',' in category name")
+        return value
+
 
 class LearningObjectSerializer(BaseSerializer):
     title = serializers.CharField()
