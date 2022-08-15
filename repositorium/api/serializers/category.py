@@ -15,4 +15,4 @@ class CategoryCreateSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "Cannot be a , in the name of the category"
             )
-        return value.capitalize()
+        return value.lower().capitalize()
