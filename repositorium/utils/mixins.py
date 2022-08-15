@@ -75,7 +75,7 @@ class ListSerializerMixin(SerializerViewSetMixin):
             )
         return self.resource_plural_name
 
-    def get_objects(self, *args, **kwargs) -> QuerySet:
+    def get_objects(self, request: Request, *args, **kwargs) -> QuerySet:
         raise ImproperlyConfigured(
             f"Define the get_objects method from {self.__class__}"
         )
@@ -83,7 +83,7 @@ class ListSerializerMixin(SerializerViewSetMixin):
     def list(self, request: Request, *args, **kwargs) -> Response:
         per_page = request.query_params.get("per_page", self.per_page_default)
         page_number = request.query_params.get("page_number", 1)
-        objs = self.get_objects(*args, **kwargs)
+        objs = self.get_objects(request, *args, **kwargs)
         paginator = Paginator(objs, per_page)
         key = self.get_resource_plural_name()
         try:

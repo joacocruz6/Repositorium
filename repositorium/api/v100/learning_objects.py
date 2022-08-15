@@ -53,8 +53,14 @@ class LearningObjectViewSet(
     def get_object(self, pk: str, *args, **kwargs) -> Model:
         return learning_objects_manager.get_learning_object_by_uuid(uuid=pk)
 
-    def get_objects(self, *args, **kwargs) -> QuerySet:
-        return learning_objects_manager.get_all_learning_objects()
+    def get_objects(self, request, *args, **kwargs) -> QuerySet:
+        category_names_filter = request.query_params.get("categories", "")
+        if category_names_filter != "":
+            category_names_filter = category_names_filter.split(",")
+        learning_object_title_filter = request.query_params.get("title", "")
+        return learning_objects_manager.get_learning_objects_filter_with_title_and_category(
+            title=learning_object_title_filter, category_names=category_names_filter
+        )
 
     def create_object(self, serializer_data: Dict, *args, **kwargs) -> LearningObject:
         title = serializer_data["title"]
@@ -195,7 +201,7 @@ class LearningObjectViewSet(
     def my_learning_objects(self, request: Request, *args, **kwargs) -> Response:
         per_page = request.query_params.get("per_page", self.per_page_default)
         page_number = request.query_params.get("page_number", 1)
-        learning_objects = self.get_objects()
+        learning_objects = self.get_objects(request)
         learning_objects = learning_objects.filter(
             creator_email=request.user.email
         ).order_by("-created_at")

@@ -1,6 +1,8 @@
 import pytest
+from django.test import Client
 from django.urls import reverse
 from mixer.backend.django import mixer
+from rest_framework.authtoken.models import Token
 
 
 @pytest.fixture
@@ -83,3 +85,13 @@ def learning_object(user, category, system):
     )
     learning_object.categories.add(category)
     yield learning_object
+
+
+@pytest.fixture
+def get_auth_client(client):
+    def _get_auth_client(user):
+        token, _ = Token.objects.get_or_create(user=user)
+        value = token.key
+        return Client(HTTP_AUTHORIZATION=f"Token {value}")
+
+    return _get_auth_client

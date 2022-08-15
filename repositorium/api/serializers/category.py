@@ -11,4 +11,8 @@ class CategoryCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=150)
 
     def validate_name(self, value: str) -> str:
-        return value.capitalize()
+        if "," in value:
+            raise serializers.ValidationError(
+                "Cannot be a , in the name of the category"
+            )
+        return value.lower().capitalize()

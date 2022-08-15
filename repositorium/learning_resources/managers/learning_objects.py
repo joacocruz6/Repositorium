@@ -93,3 +93,16 @@ def create_learning_object_usage(
         user=user, learning_object=learning_object, used_on=system_used
     )
     return usage
+
+
+def get_learning_objects_filter_with_title_and_category(
+    title: str, category_names: List[str]
+):
+    learning_objects = get_all_learning_objects()
+    if len(title) > 0:
+        learning_objects = learning_objects.filter(title__istartswith=title)
+    if len(category_names) > 0:
+        learning_objects = learning_objects.filter(
+            categories__name__in=category_names
+        ).distinct()
+    return learning_objects
