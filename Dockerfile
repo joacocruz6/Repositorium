@@ -10,6 +10,7 @@ COPY ./repositorium.sh /repositorium/
 RUN chmod -R 755 /repositorium/
 WORKDIR /repositorium/
 
+RUN echo "Acquire::Check-Valid-Until \"false\";\nAcquire::Check-Date \"false\";" | cat > /etc/apt/apt.conf.d/10no--check-valid-until
 RUN apt-get update
 RUN pip install -r requirements.txt
 RUN adduser repositorium
