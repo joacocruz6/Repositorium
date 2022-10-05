@@ -105,4 +105,4 @@ def get_learning_objects_filter_with_title_and_category(
         learning_objects = learning_objects.filter(
             categories__name__in=category_names
         ).distinct()
-    return learning_objects
+    return learning_objects.order_by("-created_at")
