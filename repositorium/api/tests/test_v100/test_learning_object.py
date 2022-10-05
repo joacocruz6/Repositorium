@@ -29,7 +29,7 @@ def test_create_learning_object_view(
     client = get_auth_client(user)
     response = client.post(url, data=data, content_type="application/json")
     assert response.status_code == 201
-    assert response.data["title"] == "Design Patterns in Shrek"
+    assert response.data["title"] == "design patterns in shrek"
     assert (
         response.data["content"] == "Somebody once told me, the world is gonna roll me."
     )

@@ -67,7 +67,7 @@ def user(user_email):
 
 @pytest.fixture
 def category():
-    yield mixer.blend("learning_resources.Category", name="Hey it's me")
+    yield mixer.blend("learning_resources.Category", name="hey it's me")
 
 
 @pytest.fixture

@@ -18,10 +18,12 @@ class LearningObjectCreateSerializer(serializers.Serializer):
         return value.lower()
 
     def validate_categories(self, value):
+        categories = list()
         for category in value:
             if "," in category:
                 raise serializers.ValidationError("Can't be a ',' in category name")
-        return value.lower()
+            categories.append(category.lower())
+        return categories
 
 
 class LearningObjectSerializer(BaseSerializer):
