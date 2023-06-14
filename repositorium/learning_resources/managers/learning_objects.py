@@ -1,8 +1,6 @@
 from typing import Dict, List, Optional, Text, Union
 from uuid import UUID
-from venv import create
 
-import arrow
 from django.db.models import QuerySet
 
 from repositorium.learning_resources.exceptions import (
@@ -106,3 +104,18 @@ def get_learning_objects_filter_with_title_and_category(
             categories__name__in=category_names
         ).distinct()
     return learning_objects.order_by("-created_at")
+
+
+def get_learning_objects_with_categories(category_names: List[str]) -> QuerySet:
+    return LearningObject.objects.filter(categories__name__in=category_names)
+
+
+def get_user_last_used_learning_object(user_email: str) -> LearningObject:
+    learning_object_usage = (
+        LearningObjectUsage.objects.filter(user__email=user_email)
+        .order_by("-created_at")
+        .first()
+    )
+    if learning_object_usage is None:
+        raise LearningObjectDoesNotExists
+    return learning_object_usage
