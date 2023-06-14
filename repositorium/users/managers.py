@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 from uuid import UUID
 
 from django.db.models import QuerySet
