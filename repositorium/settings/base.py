@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "repositorium.api",
     "repositorium.users",
     "repositorium.learning_resources",
+    "repositorium.recomendations",
 ]
 
 MIDDLEWARE = [
