@@ -14,6 +14,6 @@ class ProfileLastFilteredModel(base.AbstractRecomendationModel):
     def load(self, *args, **kwargs) -> None:
         pass
 
-    def get_recomendation(self, user_email: str, *args, **kwargs) -> LearningObject:
-        learning_objects = self.get_model_filter().get_objects(user_email=user_email)
+    def get_recomendation(self, user_uuid: str, *args, **kwargs) -> LearningObject:
+        learning_objects = self.get_model_filter().get_objects(user_uuid=user_uuid)
         return learning_objects.order_by("-created_at").first()

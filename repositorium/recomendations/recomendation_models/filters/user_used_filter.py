@@ -5,9 +5,9 @@ from repositorium.recomendations.recomendation_models.filters import base
 
 
 class UserSeenFilter(base.AbstractFilter):
-    def get_objects(self, user_email: str, *args, **kwargs) -> QuerySet:
+    def get_objects(self, user_uuid: str, *args, **kwargs) -> QuerySet:
         learning_object_uuids = LearningObjectUsage.objects.filter(
-            user__email=user_email
+            user__uuid=user_uuid
         ).values_list("learning_object__uuid", flat=True)
         used_learning_objects = LearningObject.objects.filter(
             uuid__in=learning_object_uuids
