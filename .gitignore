@@ -7,3 +7,7 @@ repositorium/settings/local.py
 repositorium/files/*
 .env.prod
 .env.prod.db
+
+LearningObjects.json
+LearningObjectUsage.json
+Users.json
