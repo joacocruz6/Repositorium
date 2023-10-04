@@ -12,6 +12,10 @@ from repositorium.users.exceptions import (
 from repositorium.users.models import User
 
 
+def get_all_users() -> QuerySet:
+    return User.objects.all()
+
+
 def get_user_by_email(email: str) -> User:
     user = User.objects.filter(email=email).first()
     if user is None:

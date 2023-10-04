@@ -10,6 +10,10 @@ from repositorium.recomendations.recomendation_models.basic import (
 from repositorium.recomendations.recomendation_models.basic_filter import (
     ProfileLastFilteredModel,
 )
+from repositorium.recomendations.recomendation_models.recomendation_model import (
+    ItemsKNNRecomendationModel,
+    UserKNNRecomendationModel,
+)
 
 
 @dataclass
@@ -40,6 +44,21 @@ PROFILE_TAGS_MODEL = RecomendationModel(
     {},
 )
 
+KNN_BASIC_MODEL = RecomendationModel(
+    "548e3f29-39d0-4bef-bbcf-b4bb5900785b",
+    UserKNNRecomendationModel,
+    "User-User collaborative filter with KNN",
+    ["548e3f29-39d0-4bef-bbcf-b4bb5900785b"],
+    {},
+)
+
+KNN_ITEMS_MODEL = RecomendationModel(
+    "29c909ac-ccb0-4a0a-9818-a9e0f4833910",
+    ItemsKNNRecomendationModel,
+    "Item-Item collaborative filter with KNN",
+    ["29c909ac-ccb0-4a0a-9818-a9e0f4833910"],
+    {},
+)
 
 RECOMENDATION_MODELS = {
     "529c758f-9de6-4e25-bbd5-27db8b9f3011": PROFILE_TAGS_MODEL,
