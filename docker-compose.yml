@@ -10,6 +10,15 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
+  redis:
+    image: redis:7.2.1-alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - redisdata:/data
+
   api:
     build:
       context: .
@@ -28,8 +37,26 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST=db
       - DJANGO_DEBUG=True
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     depends_on:
       - db
 
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - .:/repositorium
+    depends_on:
+      - db
+      - redis
+
 volumes:
   postgres_data:
+  redisdata:
