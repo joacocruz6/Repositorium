@@ -1,3 +1,5 @@
+from unittest import mock
+
 import pytest
 from freezegun import freeze_time
 
@@ -35,6 +37,8 @@ def test_create_user_view(client, get_extra_url, create_url_name, user_basename)
     }
     response = client.post(url, data=data, content_type="application/json")
     assert response.status_code == 201
+    assert response.data.get("uuid") is not None
+    expected_data["uuid"] = response.data.get("uuid")
     assert response.data == expected_data
 
 

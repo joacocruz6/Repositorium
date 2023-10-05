@@ -119,3 +119,7 @@ def get_user_last_used_learning_object(user_email: str) -> LearningObject:
     if learning_object_usage is None:
         raise LearningObjectDoesNotExists
     return learning_object_usage
+
+
+def get_learning_objects_by_uuids(learning_objects_uuids: List[str]) -> QuerySet:
+    return LearningObject.objects.filter(uuid__in=learning_objects_uuids)

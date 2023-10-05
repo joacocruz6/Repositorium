@@ -24,5 +24,5 @@ def test_basic_filter(model, user, learning_object_factory, categories, system):
         learning_object=second_lo,
         used_on=system,
     )
-    recomendation = model.get_recomendation(user.email)
+    recomendation = model.get_recomendation(user.uuid)
     assert recomendation == fourth_lo

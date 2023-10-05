@@ -1,5 +1,7 @@
-from typing import Union
+from typing import List, Union
 from uuid import UUID
+
+from django.db.models import QuerySet
 
 from repositorium.users.exceptions import (
     ChangePasswordException,
@@ -8,6 +10,10 @@ from repositorium.users.exceptions import (
     UserDoesNotExists,
 )
 from repositorium.users.models import User
+
+
+def get_all_users() -> QuerySet:
+    return User.objects.all()
 
 
 def get_user_by_email(email: str) -> User:
@@ -44,3 +50,7 @@ def update_user(user_email: str, first_name: str, last_name: str) -> int:
     if not users.count() == 1:
         raise MultipleUsersReturned
     return users.update(first_name=first_name, last_name=last_name)
+
+
+def get_users_by_uuid(users_uuid: List[str]) -> QuerySet:
+    return User.objects.filter(uuid__in=users_uuid)

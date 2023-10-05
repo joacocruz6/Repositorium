@@ -30,6 +30,7 @@ class UserCreateSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.Serializer):
     email = serializers.EmailField()
+    uuid = serializers.UUIDField()
     first_name = serializers.CharField(max_length=150)
     last_name = serializers.CharField(max_length=150)
     created_at = serializers.DateTimeField()
