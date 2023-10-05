@@ -14,4 +14,4 @@ RUN echo "Acquire::Check-Valid-Until \"false\";\nAcquire::Check-Date \"false\";"
 RUN apt-get update
 RUN pip install -r requirements.txt
 
-CMD celery -A repositorium worker -l info
+CMD celery -A repositorium beat -l info

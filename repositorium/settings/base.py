@@ -208,13 +208,14 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
+CELERY_TASK_TRACK_STARTED = True
 CELERY_BEAT_SCHEDULE = {
     "debug-task-every-second": {
         "task": "repositorium.celery.debug_task",
-        "schedule": 10.0,
+        "schedule": 30.0,
     },
     "retrain-models": {
-        "task": "repositorium.recomendations.task.retrain_models",
+        "task": "repositorium.recomendations.tasks.retrain_models",
         "schedule": 60.0,
     },
 }

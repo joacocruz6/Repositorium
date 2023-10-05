@@ -9,7 +9,9 @@ from repositorium.recomendations.recomendation_models.manager import (
 
 @shared_task
 def retrain_models():
+    print("Received to retrain the models")
     knn_basic_model = get_recomendation_model_by_uuid(KNN_BASIC_MODEL.uuid)
     knn_items_model = get_recomendation_model_by_uuid(KNN_ITEMS_MODEL.uuid)
     knn_basic_model.train()
     knn_items_model.train()
+    print("Finished retraining models")
