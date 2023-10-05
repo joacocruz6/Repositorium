@@ -8,6 +8,7 @@ repositorium/files/*
 .env.prod
 .env.prod.db
 
+celerybeat-schedule
 LearningObjects.json
 LearningObjectUsage.json
 Users.json

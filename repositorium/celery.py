@@ -3,24 +3,26 @@ import os
 from celery import Celery
 from django.conf import settings
 
-# from .recomendations.recomendation_models.manager import KNN_BASIC_MODEL, KNN_ITEMS_MODEL, get_recomendation_model_by_uuid
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "repositorium.settings")
 
 app = Celery("repositorium")
 
-app.config_from_object("django.conf:settings")
-app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+app.config_from_object("django.conf:settings", namespace="CELERY")
+
+# app.conf.beat_schedule = {
+#     "debug-task-every-second": {
+#         "task": "repositorium.celery.debug_task",
+#         "schedule": 1.0,
+#     },
+#     "retrain-models": {
+#         "task": "recomendations.task.retrain_models",
+#         "schedule": 60.0,
+#     }
+# }
+
+app.autodiscover_tasks()
 
 
 @app.task(bind=True)
 def debug_task(self):
     print("Request: {0!r}".format(self.request))
-
-
-# @app.task
-# def retrain_models(self):
-#    knn_basic_model = get_recomendation_model_by_uuid(KNN_BASIC_MODEL.uuid)
-#    knn_items_model = get_recomendation_model_by_uuid(KNN_ITEMS_MODEL.uuid)
-#    knn_basic_model.train()
-#    knn_items_model.train()
