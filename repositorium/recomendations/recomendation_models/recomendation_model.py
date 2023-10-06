@@ -30,7 +30,9 @@ class SurpriseAlgorithm(object):
         return self.algo_class
 
     def get_path(self) -> str:
-        raise Exception
+        if self.path is None:
+            raise Exception
+        return self.path
 
     def get_sim_options(self) -> Dict:
         if self.sim_options is None:
@@ -78,7 +80,9 @@ class SurpriseAlgorithm(object):
     def get_and_build_dataset(self) -> DatasetAutoFolds:
         users = list(user_manager.get_all_users().values("email", "uuid"))
         learning_objects = list(
-            learning_object_manager.get_all_learning_objects().values("uuid")
+            learning_object_manager.get_all_learning_objects().values_list(
+                "uuid", flat=True
+            )
         )
         learning_objects_usage = list(
             learning_object_usage_manager.get_all_learning_object_usage().values(
@@ -163,6 +167,9 @@ class UserKNNRecomendationModel(SurpriseAlgorithm, base.AbstractRecomendationMod
 
 class ItemsKNNRecomendationModel(UserKNNRecomendationModel):
     sim_options = {"user_based": False}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def get_recomendation(self, item_uuid: str, *args, **kwargs) -> LearningObject:
         self.load()

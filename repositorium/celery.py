@@ -10,16 +10,6 @@ app = Celery("repositorium")
 
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
-# app.conf.beat_schedule = {
-#     "debug-task-every-second": {
-#         "task": "repositorium.celery.debug_task",
-#         "schedule": 1.0,
-#     },
-#    "retrain-models": {
-#         "task": "recomendations.task.retrain_models",
-#         "schedule": 60.0,
-#     }
-# }
 
 app.autodiscover_tasks()
 
