@@ -202,15 +202,21 @@ REDIS_HOST = get_env("REDIS_HOST", "redis")
 REDIS_PORT = get_env("REDIS_PORT", "6739")
 REDIS_PASSWORD = get_env("REDIS_PASSWORD", "eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81")
 
-BROKER_URL = f"{REDIS_HOST}://:{REDIS_PASSWORD}@redis:{REDIS_PORT}/0"
+CELERY_BROKER_URL = f"{REDIS_HOST}://:{REDIS_PASSWORD}@redis:{REDIS_PORT}/0"
 CELERY_RESULT_BACKEND = f"{REDIS_HOST}://:{REDIS_PASSWORD}@redis:{REDIS_PORT}/0"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
+CELERY_TASK_TRACK_STARTED = True
+HOUR = 60 * 60  # One hour in seconds
 CELERY_BEAT_SCHEDULE = {
     "debug-task-every-second": {
         "task": "repositorium.celery.debug_task",
-        "schedule": 1.0,
-    }
+        "schedule": HOUR / 2,  # Every half an hour
+    },
+    "retrain-models": {
+        "task": "repositorium.recomendations.tasks.retrain_models",
+        "schedule": 3 * HOUR,  # Every three hours
+    },
 }

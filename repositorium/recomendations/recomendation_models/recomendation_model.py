@@ -30,7 +30,9 @@ class SurpriseAlgorithm(object):
         return self.algo_class
 
     def get_path(self) -> str:
-        raise Exception
+        if self.path is None:
+            raise Exception
+        return self.path
 
     def get_sim_options(self) -> Dict:
         if self.sim_options is None:
@@ -78,7 +80,9 @@ class SurpriseAlgorithm(object):
     def get_and_build_dataset(self) -> DatasetAutoFolds:
         users = list(user_manager.get_all_users().values("email", "uuid"))
         learning_objects = list(
-            learning_object_manager.get_all_learning_objects().values("uuid")
+            learning_object_manager.get_all_learning_objects().values_list(
+                "uuid", flat=True
+            )
         )
         learning_objects_usage = list(
             learning_object_usage_manager.get_all_learning_object_usage().values(
@@ -115,6 +119,7 @@ class UserKNNRecomendationModel(SurpriseAlgorithm, base.AbstractRecomendationMod
         super().__init__()
         self.uuid = uuid
         self.path = f"RecomendationModels/{self.uuid}.sav"
+        self.predictor = dump.load(self.path)
 
     def get_top_n(self, uuid: str, n=5) -> List[str]:
         learning_objects = list(
@@ -126,7 +131,7 @@ class UserKNNRecomendationModel(SurpriseAlgorithm, base.AbstractRecomendationMod
             return learning_objects
         top_n = list()  # uuid, rating
         for learning_object_uuid in learning_objects:
-            prediction = self.algo.predict(uuid, learning_object_uuid)
+            prediction = self.predictor.predict(uuid, learning_object_uuid)
             rating_predicted = prediction.est
             if len(top_n) < n:
                 top_n.append((learning_object_uuid, rating_predicted))
@@ -149,6 +154,7 @@ class UserKNNRecomendationModel(SurpriseAlgorithm, base.AbstractRecomendationMod
     def get_recomendation(self, user_uuid: str, *args, **kwargs) -> LearningObject:
         self.load()
         neighbours = self.get_top_n(user_uuid, n=5)
+        print(neighbours)
         users = user_manager.get_users_by_uuid(users_uuid=neighbours)
         learning_objects = list()
         for user in users:
@@ -158,11 +164,16 @@ class UserKNNRecomendationModel(SurpriseAlgorithm, base.AbstractRecomendationMod
                 )
             )
             learning_objects.append(learning_object)
-        return random.choice(learning_objects)
+        if len(learning_objects) > 0:
+            return random.choice(learning_objects)
+        return None
 
 
 class ItemsKNNRecomendationModel(UserKNNRecomendationModel):
     sim_options = {"user_based": False}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def get_recomendation(self, item_uuid: str, *args, **kwargs) -> LearningObject:
         self.load()
