@@ -35,6 +35,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.worker
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     volumes:
       - .:/repositorium
     depends_on:
