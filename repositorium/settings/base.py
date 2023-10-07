@@ -209,13 +209,14 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "UTC"
 CELERY_TASK_TRACK_STARTED = True
+HOUR = 60 * 60  # One hour in seconds
 CELERY_BEAT_SCHEDULE = {
     "debug-task-every-second": {
         "task": "repositorium.celery.debug_task",
-        "schedule": 30.0,
+        "schedule": HOUR / 2,  # Every half an hour
     },
     "retrain-models": {
         "task": "repositorium.recomendations.tasks.retrain_models",
-        "schedule": 60.0,
+        "schedule": 3 * HOUR,  # Every three hours
     },
 }
