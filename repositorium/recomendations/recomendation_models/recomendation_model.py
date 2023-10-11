@@ -183,7 +183,7 @@ class ItemsKNNRecomendationModel(UserKNNRecomendationModel):
         ).uuid
         dataset = self.get_and_build_dataset()
         trainset = dataset.build_full_trainset()
-        item_id = trainset.to_inner_iid(item_uuid)
+        item_id = trainset.to_inner_iid(str(item_uuid))
         neighbours = self.predictor.get_neighbors(item_id, 5)
         neighbours_uuids = [
             trainset.to_raw_iid(neighbour_id) for neighbour_id in neighbours
