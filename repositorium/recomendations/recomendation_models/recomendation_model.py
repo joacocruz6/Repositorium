@@ -156,16 +156,15 @@ class UserKNNRecomendationModel(SurpriseAlgorithm, base.AbstractRecomendationMod
         self.load()
         neighbours = self.get_top_n(user_uuid, n=5)
         print(neighbours)
-        users = user_manager.get_users_by_uuid(users_uuid=neighbours)
-        print(users)
         learning_objects = list()
-        for user in users:
-            learning_object = (
-                learning_object_manager.get_user_last_used_learning_object(
-                    user_email=user.email
+        for neighbour_uuid in neighbours:
+            try:
+                learning_object = learning_object_manager.get_learning_object_by_uuid(
+                    uuid=neighbour_uuid
                 )
-            )
-            learning_objects.append(learning_object)
+                learning_objects.append(learning_object)
+            except Exception as e:
+                print(e)
         if len(learning_objects) > 0:
             return random.choice(learning_objects)
         return None
