@@ -34,4 +34,4 @@ class ExperimentViewSet(ViewSet):
             data = {
                 "errors": "missing some values on the request. Check to include both values."
             }
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST, data=data)

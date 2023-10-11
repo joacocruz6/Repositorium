@@ -175,8 +175,12 @@ class ItemsKNNRecomendationModel(UserKNNRecomendationModel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def get_recomendation(self, item_uuid: str, *args, **kwargs) -> LearningObject:
+    def get_recomendation(self, user_uuid: str, *args, **kwargs) -> LearningObject:
         self.load()
+        user = user_manager.get_users_by_uuid(users_uuid=[user_uuid]).first()
+        item_uuid = learning_object_manager.get_user_last_used_learning_object(
+            user_email=user.email
+        ).uuid
         dataset = self.get_and_build_dataset()
         trainset = dataset.build_full_trainset()
         item_id = trainset.to_inner_iid(item_uuid)
