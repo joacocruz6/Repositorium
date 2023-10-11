@@ -7,6 +7,7 @@ from surprise.dataset import DatasetAutoFolds
 from surprise.model_selection import cross_validate
 from surprise.prediction_algorithms import knns
 from surprise.prediction_algorithms.algo_base import AlgoBase
+from surprise.prediction_algorithms.matrix_factorization import SVDpp
 
 from repositorium.learning_resources.managers import (
     learning_object_usage as learning_object_usage_manager,
@@ -167,6 +168,12 @@ class UserKNNRecomendationModel(SurpriseAlgorithm, base.AbstractRecomendationMod
         if len(learning_objects) > 0:
             return random.choice(learning_objects)
         return None
+
+
+class SVDPPRecomendationModel(UserKNNRecomendationModel):
+    predictor: SVDpp = None
+    sim_options = {"user_based": True}
+    algo_class = SVDpp
 
 
 class ItemsKNNRecomendationModel(UserKNNRecomendationModel):

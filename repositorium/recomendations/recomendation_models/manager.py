@@ -12,6 +12,7 @@ from repositorium.recomendations.recomendation_models.basic_filter import (
 )
 from repositorium.recomendations.recomendation_models.recomendation_model import (
     ItemsKNNRecomendationModel,
+    SVDPPRecomendationModel,
     UserKNNRecomendationModel,
 )
 
@@ -53,9 +54,17 @@ KNN_BASIC_MODEL = RecomendationModel(
 )
 
 KNN_ITEMS_MODEL = RecomendationModel(
-    "29c909ac-ccb0-4a0a-9818-a9e0f4833910",
+    "9a37b071-6668-4be8-8246-e98a439cd6f3",
     ItemsKNNRecomendationModel,
     "Item-Item collaborative filter with KNN",
+    ["9a37b071-6668-4be8-8246-e98a439cd6f3"],
+    {},
+)
+
+SVD_PP_MODEL = RecomendationModel(
+    "29c909ac-ccb0-4a0a-9818-a9e0f4833910",
+    SVDPPRecomendationModel,
+    "SVD pp collaborative filter",
     ["29c909ac-ccb0-4a0a-9818-a9e0f4833910"],
     {},
 )
@@ -64,7 +73,8 @@ RECOMENDATION_MODELS = {
     "529c758f-9de6-4e25-bbd5-27db8b9f3011": PROFILE_TAGS_MODEL,
     "66c99e25-cdc7-4ed6-8f4c-9d3619898b8b": LAST_CREATED_MODEL,
     "548e3f29-39d0-4bef-bbcf-b4bb5900785b": KNN_BASIC_MODEL,
-    "29c909ac-ccb0-4a0a-9818-a9e0f4833910": KNN_ITEMS_MODEL,
+    "9a37b071-6668-4be8-8246-e98a439cd6f3": KNN_ITEMS_MODEL,
+    "29c909ac-ccb0-4a0a-9818-a9e0f4833910": SVD_PP_MODEL,
 }
 
 
