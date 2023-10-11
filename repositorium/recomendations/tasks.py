@@ -3,6 +3,7 @@ from celery import shared_task
 from repositorium.recomendations.recomendation_models.manager import (
     KNN_BASIC_MODEL,
     KNN_ITEMS_MODEL,
+    SVD_PP_MODEL,
     get_recomendation_model_by_uuid,
 )
 
@@ -12,6 +13,8 @@ def retrain_models():
     print("Received to retrain the models")
     knn_basic_model = get_recomendation_model_by_uuid(KNN_BASIC_MODEL.uuid)
     knn_items_model = get_recomendation_model_by_uuid(KNN_ITEMS_MODEL.uuid)
+    svd_pp_model = get_recomendation_model_by_uuid(SVD_PP_MODEL.uuid)
     knn_basic_model.train()
     knn_items_model.train()
+    svd_pp_model.train()
     print("Finished retraining models")
